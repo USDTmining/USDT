@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earn USDT Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #052820;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .neumorphic-container {
+            background: #f0f0f0;
+            border-radius: 20px;
+            padding: 20px;
+            width: 400px;
+            max-width: 90%;
+            position: relative;
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+        }
+
+        .back-arrow svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+        }
+
+        .back-arrow:hover svg {
+            fill: #00ff99;
+        }
+
+        .header {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .bulb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .red { background-color: red; }
+        .green { background-color: #34c759; }
+
+        .task-header {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .dropdown {
+            display: none;
+            background: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: inset 5px 5px 10px #d1d1d1, inset -5px -5px 10px #ffffff;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .dropdown p {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .input-container {
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            background: #f0f0f0;
+            box-shadow: inset 5px 5px 10px #d1d1d1, inset -5px -5px 10px #ffffff;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: linear-gradient(90deg, #00c896, #00ffb3);
+            box-shadow: 5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            box-shadow: inset 5px 5px 10px #d1d1d1, inset -5px -5px 10px #ffffff;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .confirm-btn {
+            margin-top: 20px;
+            background: linear-gradient(90deg, #00c896, #00ffb3);
+        }
+
+        .green-btn {
+            background: linear-gradient(90deg, #00c896, #00ffb3);
+            color: white;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #031e1e;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #aaa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item svg {
+            width: 25px;
+            height: 25px;
+            fill: #888;
+            transition: transform 0.3s ease, fill 0.3s ease;
+        }
+
+        .nav-item span {
+            font-size: 0.7rem;
+            margin-top: 2px;
+            display: none;
+        }
+
+        .nav-item.active svg,
+        .nav-item:hover svg {
+            fill: #00ff99;
+            transform: scale(1.2) rotate(360deg);
+        }
+
+        .nav-item.active span {
+            display: block;
+            color: #00ff99;
+        }
+
+        .mine-icon {
+            position: relative;
+            top: -15px;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #00ffcc, #00775e);
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00ffcc, inset 5px 5px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid #031e1e;
+            transition: transform 0.3s ease;
+        }
+
+        .mine-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: #ffffff;
+            filter: drop-shadow(0 0 4px #00ffcc);
+        }
+
+        .mine-label {
+            position: absolute;
+            top: 76px;
+            font-size: 0.7rem;
+            color: #00ffcc;
+            font-weight: bold;
+        }
+
+        a.mine-link {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="neumorphic-container">
+        <div class="back-arrow" onclick="history.back()">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+        </div>
+        <div class="header"><strong>Complete these tasks to Earn USDT</strong></div>
+        
+        <div class="task" id="task1">
+            <div class="bulb red" id="bulb1"></div>
+            <div class="task-header"><strong>Invite Your Friends</strong></div>
+        </div>
+        <div class="dropdown" id="dropdown1">
+            <p>Invite Your Friends, Top The Leader Board And Earn USDT</p>
+            <div class="input-container">
+                <input type="text" id="referralCode" placeholder="Submit Your Referral Code">
+                <button id="submit1">Submit</button>
+            </div>
+        </div>
+        
+        <div class="task" id="task2">
+            <div class="bulb red" id="bulb2"></div>
+            <div class="task-header"><strong>Join Nebit campaign</strong></div>
+        </div>
+        <div class="dropdown" id="dropdown2">
+            <p>Join Nebit campaign, the new crypto currency wallet and exchange platform set to launch on Q1 2026.</p>
+            <button id="visitNebit">Visit NEBIT Site</button>
+            <div class="input-container">
+                <input type="text" id="nebitAddress" placeholder="Submit Your Nebit Wallet Address">
+                <button id="submit2">Submit</button>
+            </div>
+        </div>
+        
+        <div class="task" id="task3">
+            <div class="bulb red" id="bulb3"></div>
+            <div class="task-header"><strong>Submit Your USDT-TRX Address</strong></div>
+        </div>
+        <div class="dropdown" id="dropdown3">
+            <p>By submitting my USDT-TRX Address, I here-by accept that the above provide information is correct and my USDT should be transferred to this USDT-TRX wallet address after the Airdrop Count Down.</p>
+            <div class="input-container">
+                <input type="text" id="usdtAddress" placeholder="Submit Your USDT-TRX Wallet Address">
+                <button id="submit3">Submit</button>
+            </div>
+        </div>
+        
+        <button class="confirm-btn" id="confirm" disabled>Confirm</button>
+    </div>
+
+    <!-- Nav Bar -->
+    <div class="bottom-nav">
+            <div class="nav-item active" onclick="handleNavClick(this, 'airdrop.html')">
+                <svg viewBox="0 0 24 24"><path d="M12 2C10.89 2 10 2.89 10 4s.89 2 2 2 2-.89 2-2-.89-2-2-2zm0 10c-.89 0-1.74-.29-2.42-.79l-.9.89 2.61 2.61c.18.18.43.29.7.29s.52-.11.7-.29l2.61-2.61-.9-.89c-.68.5-1.53.79-2.42.79zm0-8C6.48 4 2 8.48 2 14h2c0-4.42 3.58-8 8-8s8 3.58 8 8h2c0-5.52-4.48-10-10-10z"/></svg>
+                <span>Airdrop</span>
+            </div>
+        
+        <a href="referral.html">
+            <div class="nav-item" onclick="handleNavClick(this, 'referral.html')">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span>Referral</span>
+            </div>
+        </a>
+        <a href="index.html" class="mine-link" onclick="handleNavClick(this, 'mine.html')">
+            <div class="mine-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19.1 4.93L17.67 3.5l-3.19 3.19L12.5 4.7l-.7.7 1.99 1.99-9.08 9.09c-.39.39-.39 1.02 0 1.41.2.2.45.29.71.29s.51-.1.71-.29l9.08-9.09 1.99 1.99.7-.7-2-1.99L19.1 4.93z"/>
+                </svg>
+            </div>
+            <div class="mine-label">Mine</div>
+        </a>
+        <a href="vault.html">
+            <div class="nav-item" onclick="handleNavClick(this, 'wallet.html')">
+                <svg viewBox="0 0 24 24"><path d="M21 7H5c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16v-2H5v-1h16v-2H5v-1h16v-2H5v-1h16v-2z"/></svg>
+                <span>Wallet</span>
+            </div>
+        </a>
+        <a href="settings.html">
+            <div class="nav-item" onclick="handleNavClick(this, 'settings.html')">
+                <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.06-.94l2.03-1.58c.18-.14.23-.39.12-.59l-1.91-3.32a.495.495 0 00-.58-.22l-2.39.96a7.007 7.007 0 00-1.62-.94L14.5 2.5a.5.5 0 00-.5-.5h-4a.5.5 0 00-.5.5l-.38 2.43a7.007 7.007 0 00-1.62.94l-2.39-.96a.495.495 0 00-.58.22l-1.91 3.32c-.11.2-.06.45.12.59l2.03 1.58c-.04.3-.06.61-.06.94s.02.64.06.94L2.86 14.5c-.18.14-.23.39-.12.59l1.91 3.32c.11.2.37.28.58.22l2.39-.96c.5.38 1.05.7 1.62.94l.38 2.43c.05.25.25.44.5.44h4c.25 0 .45-.19.5-.44l.38-2.43a7.007 7.007 0 001.62-.94l2.39.96c.21.06.47-.02.58-.22l1.91-3.32a.495.495 0 00-.12-.59l-2.03-1.56zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5S10.07 8.5 12 8.5s3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+                <span>Settings</span>
+            </div>
+        </a>
+    </div>
+
+    <script>
+        // Load from localStorage
+        const storageKeys = {
+            task1: 'task1Completed',
+            task2: 'task2Completed',
+            task3: 'task3Completed',
+            referralCode: 'referralCode',
+            nebitAddress: 'nebitAddress',
+            usdtAddress: 'usdtAddress'
+        };
+
+        const completed = {
+            task1: localStorage.getItem(storageKeys.task1) === 'true',
+            task2: localStorage.getItem(storageKeys.task2) === 'true',
+            task3: localStorage.getItem(storageKeys.task3) === 'true'
+        };
+
+        document.getElementById('referralCode').value = localStorage.getItem(storageKeys.referralCode) || '';
+        document.getElementById('nebitAddress').value = localStorage.getItem(storageKeys.nebitAddress) || '';
+        document.getElementById('usdtAddress').value = localStorage.getItem(storageKeys.usdtAddress) || '';
+
+        // Update bulbs and confirm button
+        function updateUI() {
+            document.getElementById('bulb1').classList.toggle('green', completed.task1);
+            document.getElementById('bulb1').classList.toggle('red', !completed.task1);
+            document.getElementById('bulb2').classList.toggle('green', completed.task2);
+            document.getElementById('bulb2').classList.toggle('red', !completed.task2);
+            document.getElementById('bulb3').classList.toggle('green', completed.task3);
+            document.getElementById('bulb3').classList.toggle('red', !completed.task3);
+
+            const allCompleted = completed.task1 && completed.task2 && completed.task3;
+            const confirmBtn = document.getElementById('confirm');
+            confirmBtn.disabled = !allCompleted;
+            confirmBtn.classList.toggle('green-btn', allCompleted);
+        }
+        updateUI();
+
+        // Toggle dropdowns
+        document.getElementById('task1').addEventListener('click', () => {
+            document.getElementById('dropdown1').style.display = document.getElementById('dropdown1').style.display === 'block' ? 'none' : 'block';
+        });
+        document.getElementById('task2').addEventListener('click', () => {
+            document.getElementById('dropdown2').style.display = document.getElementById('dropdown2').style.display === 'block' ? 'none' : 'block';
+        });
+        document.getElementById('task3').addEventListener('click', () => {
+            document.getElementById('dropdown3').style.display = document.getElementById('dropdown3').style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Submit handlers
+        function handleSubmit(taskId, inputId, storageKey, message) {
+            const btn = document.getElementById(`submit${taskId}`);
+            const input = document.getElementById(inputId);
+            btn.addEventListener('click', () => {
+                if (input.value.trim() === '') return;
+                btn.disabled = true;
+                btn.textContent = 'Loading...';
+                localStorage.setItem(storageKeys[storageKey], input.value);
+                setTimeout(() => {
+                    completed[`task${taskId}`] = true;
+                    localStorage.setItem(storageKeys[`task${taskId}`], 'true');
+                    alert(message);
+                    btn.textContent = 'Submit';
+                    btn.disabled = false;
+                    updateUI();
+                }, 5000);
+            });
+        }
+
+        handleSubmit(1, 'referralCode', 'referralCode', 'Referral Code Accepted');
+        handleSubmit(2, 'nebitAddress', 'nebitAddress', 'Wallet Address Accepted');
+        handleSubmit(3, 'usdtAddress', 'usdtAddress', 'USDT-TRX Wallet Address Accepted');
+
+        // Visit Nebit button
+        document.getElementById('visitNebit').addEventListener('click', () => {
+            window.open('https://nebit.io', '_blank');
+        });
+
+        // Confirm button
+        document.getElementById('confirm').addEventListener('click', () => {
+            const btn = document.getElementById('confirm');
+            btn.disabled = true;
+            btn.textContent = 'Loading...';
+            setTimeout(() => {
+                alert('You Have Successfully Confirmed And Submitted Your Details');
+                btn.textContent = 'Confirm';
+                btn.disabled = false;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
