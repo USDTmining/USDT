@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mining Savi - Admin Panel</title>
+<link rel="icon" href="https://coachflux.github.io/Ref/img/usdt.webp">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #e0f7fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #333;
+  }
+  h1 {
+    margin-top: 20px;
+    font-size: 1.8rem;
+    color: #00796b;
+  }
+  .login-box, .admin-box {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 5px 5px 15px #b2ebf2, -5px -5px 15px #ffffff;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  input, textarea {
+    width: 90%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    box-shadow: inset 3px 3px 6px #b2ebf2, inset -3px -3px 6px #ffffff;
+    margin: 10px 0;
+  }
+  button {
+    background: linear-gradient(135deg, #00bfa5, #00796b);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 3px 3px 6px #b2ebf2, -3px -3px 6px #ffffff;
+    margin-top: 10px;
+  }
+  button:hover {
+    transform: scale(1.05);
+  }
+  table {
+    width: 95%;
+    border-collapse: collapse;
+    margin-top: 30px;
+  }
+  th, td {
+    border-bottom: 1px solid #b2dfdb;
+    text-align: left;
+    padding: 10px;
+  }
+  th {
+    background-color: #b2dfdb;
+  }
+  #copyBtn {
+    margin-top: 10px;
+  }
+  #notificationForm {
+    margin-top: 20px;
+    text-align: center;
+  }
+  #notificationForm img {
+    width: 60px;
+    border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+
+<h1>Admin Panel</h1>
+
+<div class="login-box" id="loginBox">
+  <h3>Admin Login</h3>
+  <input type="password" id="adminPass" placeholder="Enter Admin Password">
+  <button onclick="checkAdmin()">Login</button>
+  <p id="loginMsg" style="color:red;"></p>
+</div>
+
+<div class="admin-box" id="adminBox" style="display:none;">
+  <h3>All Users Data</h3>
+  <button id="copyBtn">Copy All Emails</button>
+
+  <table id="usersTable">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Referrals</th>
+        <th>Ref. Earnings</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="notificationForm">
+    <h3>Send Notification to All Users</h3>
+    <input type="text" id="notifTitle" placeholder="Notification Title">
+    <textarea id="notifMsg" placeholder="Notification Message"></textarea>
+    <input type="text" id="notifImg" placeholder="Image URL (optional)" value="https://coachflux.github.io/Ref/img/usdt.webp">
+    <button onclick="sendNotification()">Send Notification</button>
+    <p id="notifStatus" style="color:green;"></p>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDR_rkTfGLWWX4NRWOVer9wwGlUFiRMRO4",
+    authDomain: "usdt-login.firebaseapp.com",
+    databaseURL: "https://usdt-login-default-rtdb.firebaseio.com",
+    projectId: "usdt-login",
+    storageBucket: "usdt-login.appspot.com",
+    messagingSenderId: "807602854227",
+    appId: "1:807602854227:web:309ae73f572e48dbc7a9a6"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  const ADMIN_PASSWORD = "AdminOnly123"; // kept local only
+  function checkAdmin() {
+    const pass = document.getElementById('adminPass').value;
+    if (pass === ADMIN_PASSWORD) {
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('adminBox').style.display = 'block';
+      loadUsers();
+    } else {
+      document.getElementById('loginMsg').textContent = "Wrong password!";
+    }
+  }
+
+  function loadUsers() {
+    const tbody = document.querySelector("#usersTable tbody");
+    db.ref("users").once("value", (snapshot) => {
+      const users = [];
+      snapshot.forEach((child) => {
+        const data = child.val();
+        users.push({
+          username: data.username || "N/A",
+          email: data.email || "N/A",
+          referrals: data.invited || 0,
+          refEarnings: data.referralEarnings || 0,
+          balance: data.balance || 0
+        });
+      });
+      users.sort((a,b) => b.referrals - a.referrals);
+      tbody.innerHTML = "";
+      users.forEach((u,i) => {
+        const row = `
+          <tr>
+            <td>${i+1}</td>
+            <td>${u.username}</td>
+            <td>${u.email}</td>
+            <td>${u.referrals}</td>
+            <td>$${u.refEarnings.toFixed(2)}</td>
+            <td>$${u.balance.toFixed(2)}</td>
+          </tr>`;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+    });
+  }
+
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    const snapshot = await db.ref("users").once("value");
+    const emails = [];
+    snapshot.forEach((child) => {
+      const email = child.val().email;
+      if(email) emails.push(email);
+    });
+    navigator.clipboard.writeText(emails.join(", "));
+    alert("All emails copied!");
+  });
+
+  function sendNotification() {
+    const title = document.getElementById("notifTitle").value.trim();
+    const message = document.getElementById("notifMsg").value.trim();
+    const image = document.getElementById("notifImg").value.trim();
+    if (!title || !message) {
+      alert("Please fill all fields.");
+      return;
+    }
+    const notifObj = {
+      title,
+      message,
+      image,
+      timestamp: Date.now()
+    };
+    db.ref("notifications").push(notifObj)
+      .then(() => {
+        document.getElementById("notifStatus").textContent = "Notification sent successfully!";
+        document.getElementById("notifTitle").value = "";
+        document.getElementById("notifMsg").value = "";
+      })
+      .catch(err => alert("Failed to send: " + err.message));
+  }
+</script>
+</body>
+</html>
