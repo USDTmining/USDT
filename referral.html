@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>USDT Miner — Referral Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  :root{ --bg:#041d18; --card:#f6fff8; --accent1:#00d996; --accent2:#008f63; --muted:#6b8a81; --danger:#7a1f1f; }
+  body{font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg),#01312b);display:flex;align-items:center;justify-content:center;padding:20px}
+  .app{width:90%;max-width:980px;background:var(--card);border-radius:14px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,0.45)}
+  header{display:flex;gap:14px;align-items:center;justify-content:center;margin-bottom:12px}
+  header img{width:64px;height:64px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.15)}
+  header h1{margin:0;color:#04312a}
+  header p{margin:0;color:var(--muted)}
+  .muted{color:var(--muted);font-size:13px}
+  .card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);width:90%}
+  .kpi-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .kpi{flex:1;background:linear-gradient(180deg,#fcfffd,#f0fff7);padding:10px;border-radius:8px;text-align:center}
+  .kpi h4{margin:4px 0;color:#006b57}
+  .kpi p{margin:0;font-weight:700}
+  button{background:linear-gradient(180deg,var(--accent1),var(--accent2));color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+  .small{font-size:13px;padding:8px;background:#eef7f1;border-radius:8px;border:none;color:#006b57;cursor:pointer;margin:2px}
+  .ref-card-main{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ref-right{padding-left:10px;border-left:1px dashed #e6f3ee}
+  .position-pill{background:linear-gradient(90deg,#eafff0,#e0fff2);padding:8px 12px;border-radius:999px;font-weight:700;color:#006b57;display:inline-block}
+  footer{text-align:center;margin-top:20px;color:#064f40;font-size:13px}
+  @media (max-width:560px){ .ref-card-main{grid-template-columns:1fr} .ref-right{border-left:none;padding-left:0;margin-top:10px} }
+
+  .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: #031e1e;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: #aaa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-item svg {
+      width: 25px;
+      height: 25px;
+      fill: #888;
+      transition: transform 0.3s ease, fill 0.3s ease;
+    }
+
+    .nav-item span {
+      font-size: 0.7rem;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .nav-item.active svg,
+    .nav-item:hover svg {
+      fill: #00ff99;
+      transform: scale(1.2) rotate(360deg);
+    }
+
+    .nav-item.active span {
+      display: block;
+      color: #00ff99;
+    }
+
+    .mine-icon {
+      position: relative;
+      top: -15px;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle at 30% 30%, #00ffcc, #00775e);
+      border-radius: 50%;
+      box-shadow: 0 0 15px #00ffcc, inset 5px 5px 10px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 4px solid #031e1e;
+      transition: transform 0.3s ease;
+    }
+
+    .mine-icon svg {
+      width: 30px;
+      height: 30px;
+      fill: #ffffff;
+      filter: drop-shadow(0 0 4px #00ffcc);
+    }
+
+    .mine-label {
+      position: absolute;
+      top: 76px;
+      font-size: 0.7rem;
+      color: #00ffcc;
+      font-weight: bold;
+    }
+
+    a.mine-link {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+</style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <img src="https://coachflux.github.io/Ref/img/usdt.webp" alt="USDT Miner logo"/>
+      <div>
+        <h1>USDT Miner</h1>
+        <p>Referral Dashboard — Earn <strong>0.30 USDT</strong> per invite</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <h3>Your Referral Dashboard</h3>
+        <div class="muted">Welcome, <span id="d_username_small"></span></div>
+      </div>
+
+      <div class="kpi-row ref-card-main">
+        <div class="ref-left">
+          <div class="kpi"><h4>Invited</h4><p id="referralCount">0</p></div>
+          <div style="margin-top:10px">
+            <p><strong>Referral Earnings:</strong> <span id="referralEarnings">$0.00</span></p>
+            <p><strong>Balance:</strong> <span id="d_balance">$0.00</span></p>
+          </div>
+          <div style="margin-top:12px;">
+            <p><strong>Username:</strong> <span id="displayUsername"></span></p>
+            <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+          </div>
+        </div>
+
+        <div class="ref-right">
+          <p><strong>Referral Code:</strong> <span id="referralCode"></span></p>
+          <p><strong>Referral Link:</strong> <span id="referralLink"></span></p>
+          <div style="margin-top:8px;">
+            <button class="small" id="copyLinkBtn">Copy Link</button>
+            <button class="small" id="copyCodeBtn">Copy Code</button>
+            <button class="small" id="shareBtn">Share</button>
+            
+          </div>
+          <div style="margin-top:12px">
+            <p><strong>Position:</strong> <span class="position-pill" id="userPosition">Loading...</span></p>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px;">
+        <button onclick="window.location.href='mine.html'" style="background:#006b57">← Back to Mining</button>
+      </div>
+    </div>
+
+    <footer>USDT Miner — Referral Dashboard</footer>
+  </div>
+
+ <!-- Nav Bar -->
+<div class="bottom-nav">
+  <a href="airdrop.html">
+  <div class="nav-item" onclick="handleNavClick(this, 'airdrop.html')">
+    <svg viewBox="0 0 24 24"><path d="M12 2C10.89 2 10 2.89 10 4s.89 2 2 2 2-.89 2-2-.89-2-2-2zm0 10c-.89 0-1.74-.29-2.42-.79l-.9.89 2.61 2.61c.18.18.43.29.7.29s.52-.11.7-.29l2.61-2.61-.9-.89c-.68.5-1.53.79-2.42.79zm0-8C6.48 4 2 8.48 2 14h2c0-4.42 3.58-8 8-8s8 3.58 8 8h2c0-5.52-4.48-10-10-10z"/></svg>
+    <span>Airdrop</span>
+  </div>
+  </a>
+
+  
+  <div class="nav-item active" onclick="handleNavClick(this, 'referral.html')">
+    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+    <span>Referral</span>
+  </div>
+  
+
+  <a href="mine.html" class="mine-link" onclick="handleNavClick(this, 'mine.html')">
+    <div class="mine-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M19.1 4.93L17.67 3.5l-3.19 3.19L12.5 4.7l-.7.7 1.99 1.99-9.08 9.09c-.39.39-.39 1.02 0 1.41.2.2.45.29.71.29s.51-.1.71-.29l9.08-9.09 1.99 1.99.7-.7-2-1.99L19.1 4.93z"/>
+      </svg>
+    </div>
+    <div class="mine-label">Mine</div>
+  </a>
+
+  <a href="vault.html">
+  <div class="nav-item" onclick="handleNavClick(this, 'wallet.html')">
+    <svg viewBox="0 0 24 24"><path d="M21 7H5c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16v-2H5v-1h16v-2H5v-1h16v-2H5v-1h16v-2z"/></svg>
+    <span>Wallet</span>
+  </div>
+  </a>
+
+  <a href="settings.html">
+  <div class="nav-item" onclick="handleNavClick(this, 'settings.html')">
+    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.06-.94l2.03-1.58c.18-.14.23-.39.12-.59l-1.91-3.32a.495.495 0 00-.58-.22l-2.39.96a7.007 7.007 0 00-1.62-.94L14.5 2.5a.5.5 0 00-.5-.5h-4a.5.5 0 00-.5.5l-.38 2.43a7.007 7.007 0 00-1.62.94l-2.39-.96a.495.495 0 00-.58.22l-1.91 3.32c-.11.2-.06.45.12.59l2.03 1.58c-.04.3-.06.61-.06.94s.02.64.06.94L2.86 14.5c-.18.14-.23.39-.12.59l1.91 3.32c.11.2.37.28.58.22l2.39-.96c.5.38 1.05.7 1.62.94l.38 2.43c.05.25.25.44.5.44h4c.25 0 .45-.19.5-.44l.38-2.43a7.007 7.007 0 001.62-.94l2.39.96c.21.06.47-.02.58-.22l1.91-3.32a.495.495 0 00-.12-.59l-2.03-1.56zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5S10.07 8.5 12 8.5s3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+    <span>Settings</span>
+  </div>
+</div>
+</a>
+  
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDR_rkTfGLWWX4NRWOVer9wwGlUFiRMRO4",
+      authDomain: "usdt-login.firebaseapp.com",
+      databaseURL: "https://usdt-login-default-rtdb.firebaseio.com",
+      projectId: "usdt-login",
+      storageBucket: "usdt-login.firebasestorage.app",
+      messagingSenderId: "807602854227",
+      appId: "1:807602854227:web:309ae73f572e48dbc7a9a6"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+    const REF_REWARD = 0.3;
+
+    // Redirect to login if user not signed in
+    auth.onAuthStateChanged(async (user)=>{
+      if(!user){ window.location.href='index.html'; return; }
+      const uid = user.uid;
+      const snap = await db.ref('users/' + uid).get();
+      if(!snap.exists()){ window.location.href='index.html'; return; }
+      const u = snap.val();
+      document.getElementById('d_username_small').innerText = u.username;
+      document.getElementById('displayUsername').innerText = u.username;
+      document.getElementById('displayEmail').innerText = u.email || 'N/A';
+      document.getElementById('referralCode').innerText = u.referralCode;
+      document.getElementById('referralCount').innerText = (u.invited || 0);
+      document.getElementById('referralEarnings').innerText = '$' + ((u.referralEarnings||0).toFixed(2));
+      document.getElementById('d_balance').innerText = '$' + ((u.balance||0).toFixed(2));
+      document.getElementById('referralLink').innerText = `${location.origin}${location.pathname.replace('referral.html','index.html')}?ref=${encodeURIComponent(u.referralCode)}`;
+
+      // get rank
+      const allSnap = await db.ref('users').get();
+      if(allSnap.exists()){
+        const arr = [];
+        const all = allSnap.val();
+        for(const k in all){
+          arr.push({ uid:k, invited:all[k].invited || 0 });
+        }
+        arr.sort((a,b)=>b.invited - a.invited);
+        const pos = arr.findIndex(x=>x.uid===uid);
+        document.getElementById('userPosition').innerText = (116538+1)+'th';
+      }
+    });
+
+    document.getElementById('logoutBtn').onclick = async ()=>{ await auth.signOut(); window.location.href='index.html'; };
+    document.getElementById('copyLinkBtn').onclick = ()=>navigator.clipboard.writeText(document.getElementById('referralLink').innerText).then(()=>alert('Copied!'));
+    document.getElementById('copyCodeBtn').onclick = ()=>navigator.clipboard.writeText(document.getElementById('referralCode').innerText).then(()=>alert('Copied!'));
+    document.getElementById('shareBtn').onclick = ()=>{
+      const code = document.getElementById('referralCode').innerText;
+      const link = document.getElementById('referralLink').innerText;
+      const text = `Join me on USDT Miner and earn free USDT! Use my referral code ${code}.\n${link}`;
+      if(navigator.share) navigator.share({ title:'USDT Miner', text, url:link });
+      else navigator.clipboard.writeText(text).then(()=>alert('Share text copied!'));
+    };
+  </script>
+</body>
+</html>
