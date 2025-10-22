@@ -222,6 +222,29 @@
       cursor: pointer;
     }
 
+    /* Install Button */
+    #installBtn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: linear-gradient(145deg, #1e293b, #334155);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 22px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      display: none;
+      transition: all 0.3s ease;
+      z-index: 20000;
+    }
+
+    #installBtn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(145deg, #334155, #1e293b);
+    }
+
     @keyframes slideIn {
       from {
         transform: translateY(-100%);
