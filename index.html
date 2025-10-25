@@ -451,7 +451,34 @@ auth.onAuthStateChanged(user=>{
     showLogin();
   }
 });
+  
 
+// 1) After creating the user and writing their user object:
+const newUid = user.uid;
+// write the basic profile (example)
+await db.ref('users/' + newUid).set({
+  username: chosenUsername,
+  email: chosenEmail,
+  referralCode: generatedReferralCodeForThisUser,
+  balance: 0,
+  invited: 0,
+  referralEarnings: 0
+});
+
+// 2) If URL has ?ref=..., apply it:
+const refFromUrl = (new URLSearchParams(window.location.search)).get('ref');
+if (refFromUrl) {
+  // call the function exposed by referral.js
+  try {
+    const res = await window.applyReferral(refFromUrl, newUid, { username: chosenUsername, email: chosenEmail });
+    console.log('applyReferral result', res);
+  } catch (e) {
+    console.warn('applyReferral call failed', e);
+  }
+}
+
+
+  
 // wire buttons
 registerBtn.addEventListener('click', registerUser);
 document.getElementById('createAccountBtn').addEventListener('click', (e)=>{ e.preventDefault(); showRegister(); });
