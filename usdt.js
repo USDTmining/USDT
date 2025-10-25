@@ -283,3 +283,27 @@ function showPage(page) {
       toast.classList.add("hide");
       setTimeout(() => toast.remove(), 500);
     }
+
+  // 🧭 Redirect user to index.html if they return from another website
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+      // Check if user came back from another website or refresh
+      const referrer = document.referrer;
+      const sameDomain = referrer.includes(window.location.hostname);
+
+      if (!sameDomain) {
+        // Redirect to index.html if coming from outside
+        window.location.href = "index.html";
+      }
+    }
+  });
+
+  // Optional: Also trigger if they reload after being idle
+  window.addEventListener("focus", function () {
+    const referrer = document.referrer;
+    const sameDomain = referrer.includes(window.location.hostname);
+
+    if (!sameDomain) {
+      window.location.href = "index.html";
+    }
+  });
