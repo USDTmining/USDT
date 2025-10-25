@@ -1,295 +1,525 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>USDT Miner — Referral Dashboard</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<style>
-  :root{ --bg:#041d18; --card:#f6fff8; --accent1:#00d996; --accent2:#008f63; --muted:#6b8a81; --danger:#7a1f1f; }
-  body{font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg),#01312b);display:flex;align-items:center;justify-content:center;padding:20px}
-  .app{width:100%;max-width:960px;background:var(--card);border-radius:14px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,0.45)}
-  header{display:flex;gap:14px;align-items:center;justify-content:center;margin-bottom:12px}
-  header img{width:64px;height:64px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.15)}
-  header h1{margin:0;color:#04312a}
-  header p{margin:0;color:var(--muted)}
-  .muted{color:var(--muted);font-size:13px}
-  .card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06);width:90%}
-  .kpi-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-  .kpi{flex:1;background:linear-gradient(180deg,#fcfffd,#f0fff7);padding:10px;border-radius:8px;text-align:center;width:80%}
-  .kpi h4{margin:4px 0;color:#006b57}
-  .kpi p{margin:0;font-weight:700}
-  button{background:linear-gradient(180deg,var(--accent1),var(--accent2));color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
-  .small{font-size:13px;padding:8px;background:#eef7f1;border-radius:8px;border:none;color:#006b57;cursor:pointer;margin:2px}
-  .ref-card-main{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .ref-right{padding-left:10px;border-left:1px dashed #e6f3ee}
-  .position-pill{background:linear-gradient(90deg,#eafff0,#e0fff2);padding:8px 12px;border-radius:999px;font-weight:700;color:#006b57;display:inline-block}
-  footer{text-align:center;margin-top:20px;color:#064f40;font-size:13px}
-  @media (max-width:560px){ .ref-card-main{grid-template-columns:1fr} .ref-right{border-left:none;padding-left:0;margin-top:10px} }
-
-  .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 50px;
-      background: #031e1e;
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>USDT Miner — Referral Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --bg: #041d18;
+      --card: #f6fff8;
+      --accent1: #00d996;
+      --accent2: #008f63;
+      --muted: #6b8a81;
+      --text-dark: #04312a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      background: linear-gradient(180deg, var(--bg), #01312b);
+      color: var(--text-dark);
       display: flex;
-      justify-content: space-around;
       align-items: center;
-      border-top-left-radius: 30px;
-      border-top-right-radius: 30px;
-      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
-      z-index: 999;
+      justify-content: center;
+      padding: 20px;
     }
-
-    .nav-item {
-      text-align: center;
-      color: #aaa;
+    .app {
+      width: 100%;
+      max-width: 980px;
+      background: var(--card);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+    }
+    header {
       display: flex;
-      flex-direction: column;
+      gap: 14px;
       align-items: center;
-      transition: transform 0.3s ease;
-      cursor: pointer;
+      justify-content: center;
+      margin-bottom: 12px;
     }
-
-    .nav-item svg {
-      width: 25px;
-      height: 25px;
-      fill: #888;
-      transition: transform 0.3s ease, fill 0.3s ease;
+    header img {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     }
-
-    .nav-item span {
-      font-size: 0.7rem;
-      margin-top: 2px;
-      display: none;
+    header h1 {
+      margin: 0;
+      color: var(--text-dark);
     }
-
-    .nav-item.active svg,
-    .nav-item:hover svg {
-      fill: #00ff99;
-      transform: scale(1.2) rotate(360deg);
+    header p {
+      margin: 0;
+      color: var(--muted);
     }
-
-    .nav-item.active span {
-      display: block;
-      color: #00ff99;
-    }
-
-    .mine-icon {
-      position: relative;
-      top: -15px;
-      width: 50px;
-      height: 50px;
-      background: radial-gradient(circle at 30% 30%, #00ffcc, #00775e);
-      border-radius: 50%;
-      box-shadow: 0 0 15px #00ffcc, inset 5px 5px 10px rgba(0,0,0,0.2);
+    /* Top floating referral count box */
+    .ref-top {
       display: flex;
       justify-content: center;
-      align-items: center;
-      border: 4px solid #031e1e;
-      transition: transform 0.3s ease;
+      margin-top: -26px;
+      margin-bottom: 12px;
     }
-
-    .mine-icon svg {
-      width: 30px;
-      height: 30px;
-      fill: #ffffff;
-      filter: drop-shadow(0 0 4px #00ffcc);
-    }
-
-    .mine-label {
-      position: absolute;
-      top: 76px;
-      font-size: 0.7rem;
-      color: #00ffcc;
-      font-weight: bold;
-    }
-
-    a.mine-link {
-      text-decoration: none;
+    .ref-count {
+      background: linear-gradient(180deg, #fff, #f0fff7);
+      border-radius: 14px;
+      padding: 14px 22px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
       display: flex;
-      flex-direction: column;
       align-items: center;
+      gap: 14px;
+      transform-origin: center;
+      animation: pulseGlow 2.5s infinite;
     }
-  
-</style>
+    @keyframes pulseGlow {
+      0%   { transform: scale(1); box-shadow: 0 6px 18px rgba(0,0,0,0.06), 0 0 0 0 rgba(0,217,150,0.18); }
+      50%  { transform: scale(1.03); box-shadow: 0 12px 36px rgba(0,0,0,0.12), 0 0 30px 6px rgba(0,217,150,0.10); }
+      100% { transform: scale(1); box-shadow: 0 6px 18px rgba(0,0,0,0.06), 0 0 0 0 rgba(0,217,150,0.18); }
+    }
+    .ref-count .number {
+      font-size: 30px;
+      font-weight: 800;
+      color: #006b57;
+    }
+    .ref-count .label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .ref-count .sub {
+      text-align: left;
+      min-width: 140px;
+    }
+    .ref-count .sub .label2 {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .ref-count .sub .value2 {
+      display: inline-block;
+      background: linear-gradient(90deg, #eafff0, #e0fff2);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #006b57;
+      font-size: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .card {
+      background: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+    h3 { margin-top: 0; color: #006b57 }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .kpi {
+      background: linear-gradient(180deg, #fcfffd, #f0fff7);
+      padding: 12px;
+      border-radius: 8px;
+    }
+    .value-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0;
+    }
+    .value { font-weight: 700; color: var(--text-dark) }
+    .share-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .small {
+      font-size: 13px;
+      padding: 8px;
+      background: #eef7f1;
+      border-radius: 8px;
+      border: none;
+      color: #006b57;
+      cursor: pointer;
+    }
+    .position-pill {
+      background: linear-gradient(90deg, #eafff0, #e0fff2);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #006b57;
+      display: inline-block;
+    }
+    .canvas-preview {
+      margin-top: 14px;
+      text-align: center;
+    }
+    #shareCanvas {
+      width: 100%;
+      max-width: 560px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    footer {
+      margin-top: 14px;
+      text-align: center;
+      color: #064f40;
+      font-size: 13px;
+    }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr }
+      .kpi-row { grid-column: span 2 }
+    }
+  </style>
 </head>
 <body>
-  <div class="app">
+  <div class="app" role="main" aria-live="polite">
     <header>
-      <img src="./img/usdt.webp" alt="USDT Miner logo"/>
+      <img id="appImage" src="https://coachflux.github.io/Ref/img/usdt.webp" alt="USDT Miner logo"/>
       <div>
         <h1>USDT Miner</h1>
-        <p>Referral Dashboard — Earn <strong>0.30 USDT</strong> per invite</p>
+        <p class="muted">Referral Dashboard — Earn for every invite</p>
       </div>
     </header>
 
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div class="ref-top">
+      <div class="ref-count">
+        <div>
+          <div class="label">Total Invited</div>
+          <div class="number" id="referralCountTop">0</div>
+        </div>
+        <div class="sub">
+          <div class="label2">Your Rank</div>
+          <div class="value2" id="userPositionTop">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
         <h3>Your Referral Dashboard</h3>
-        <div class="muted">Welcome, <span id="d_username_small"></span></div>
-      </div>
-
-      <div class="kpi-row ref-card-main">
-        <div class="ref-left">
-          <div class="kpi"><h4>Invited</h4><p id="referralCount">0</p></div>
-          <div style="margin-top:10px">
-            <p><strong>Referral Earnings:</strong> <span id="referralEarnings">$0.00</span></p>
-            <p><strong>Balance:</strong> <span id="d_balance">$0.00</span></p>
-          </div>
-          <div style="margin-top:12px;">
-            <p><strong>Username:</strong> <span id="displayUsername"></span></p>
-            <p><strong>Email:</strong> <span id="displayEmail"></span></p>
-          </div>
-        </div>
-
-        <div class="ref-right">
-          <p><strong>Referral Code:</strong> <span id="referralCode"></span></p>
-          <p><strong>Referral Link:</strong> <span id="referralLink"></span></p>
-          <div style="margin-top:8px;">
-            <button class="small" id="copyLinkBtn">Copy Link</button>
-            <button class="small" id="copyCodeBtn">Copy Code</button>
-            <button class="small" id="shareBtn">Share</button>
-            
-          </div>
-          <div style="margin-top:12px">
-            <p><strong>Position:</strong> <span class="position-pill" id="userPosition">Loading...</span></p>
+        <div class="kpi-row">
+          <div class="kpi">
+            <div class="value-line"><div>Username</div><div class="value" id="displayUsername">—</div></div>
+            <div class="value-line"><div>Email</div><div class="value" id="displayEmail">—</div></div>
+            <div class="value-line"><div>Referral Code</div><div class="value" id="referralCode">—</div></div>
+            <div class="value-line"><div>Referral Link</div><div class="value" id="referralLink">—</div></div>
+            <div style="margin-top:8px;">
+              <div class="value-line"><div>Referral Earnings</div><div class="value" id="referralEarnings">$0.00</div></div>
+              <div class="value-line"><div>Balance</div><div class="value" id="d_balance">$0.00</div></div>
+            </div>
+            <div style="margin-top:12px" class="share-row">
+              <button class="small" id="copyLinkBtn"><i class="fa fa-copy"></i> Copy Link</button>
+              <button class="small" id="shareTextBtn"><i class="fa fa-share-alt"></i> Share Text</button>
+              <button class="small" id="shareImageBtn"><i class="fa fa-image"></i> Share Image</button>
+              <button class="small" id="downloadImageBtn"><i class="fa fa-download"></i> Download Image</button>
+              <button class="small" id="logoutBtn"><i class="fa fa-sign-out-alt"></i> Logout</button>
+            </div>
           </div>
         </div>
       </div>
-      <div style="text-align:center;margin-top:20px;">
-        <button onclick="window.location.href='mine.html'" style="background:#006b57">← Back to Mining</button>
+
+      <div class="card">
+        <h3>Shareable Animated Card</h3>
+        <div class="kpi">
+          <div style="text-align:center;color:var(--muted);margin-bottom:8px">
+            Animated promo — press “Share Image” to capture
+          </div>
+          <div class="canvas-preview">
+            <canvas id="shareCanvas" width="800" height="480"></canvas>
+          </div>
+          <div style="margin-top:10px;color:var(--muted);font-size:13px">
+            Banner: “Join USDT Miner & Earn Free USDT Daily”
+          </div>
+        </div>
       </div>
     </div>
 
     <footer>USDT Miner — Referral Dashboard</footer>
   </div>
 
- <!-- Nav Bar -->
-<div class="bottom-nav">
-  <a href="airdrop.html">
-  <div class="nav-item" onclick="handleNavClick(this, 'airdrop.html')">
-    <svg viewBox="0 0 24 24"><path d="M12 2C10.89 2 10 2.89 10 4s.89 2 2 2 2-.89 2-2-.89-2-2-2zm0 10c-.89 0-1.74-.29-2.42-.79l-.9.89 2.61 2.61c.18.18.43.29.7.29s.52-.11.7-.29l2.61-2.61-.9-.89c-.68.5-1.53.79-2.42.79zm0-8C6.48 4 2 8.48 2 14h2c0-4.42 3.58-8 8-8s8 3.58 8 8h2c0-5.52-4.48-10-10-10z"/></svg>
-    <span>Airdrop</span>
-  </div>
-  </a>
-
-  
-  <div class="nav-item active" onclick="handleNavClick(this, 'referral.html')">
-    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-    <span>Referral</span>
-  </div>
-  
-
-  <a href="mine.html" class="mine-link" onclick="handleNavClick(this, 'mine.html')">
-    <div class="mine-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="M19.1 4.93L17.67 3.5l-3.19 3.19L12.5 4.7l-.7.7 1.99 1.99-9.08 9.09c-.39.39-.39 1.02 0 1.41.2.2.45.29.71.29s.51-.1.71-.29l9.08-9.09 1.99 1.99.7-.7-2-1.99L19.1 4.93z"/>
-      </svg>
-    </div>
-    <div class="mine-label">Mine</div>
-  </a>
-
-  <a href="vault.html">
-  <div class="nav-item" onclick="handleNavClick(this, 'wallet.html')">
-    <svg viewBox="0 0 24 24"><path d="M21 7H5c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16v-2H5v-1h16v-2H5v-1h16v-2H5v-1h16v-2z"/></svg>
-    <span>Wallet</span>
-  </div>
-  </a>
-
-  <a href="settings.html">
-  <div class="nav-item" onclick="handleNavClick(this, 'settings.html')">
-    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.06-.94l2.03-1.58c.18-.14.23-.39.12-.59l-1.91-3.32a.495.495 0 00-.58-.22l-2.39.96a7.007 7.007 0 00-1.62-.94L14.5 2.5a.5.5 0 00-.5-.5h-4a.5.5 0 00-.5.5l-.38 2.43a7.007 7.007 0 00-1.62.94l-2.39-.96a.495.495 0 00-.58.22l-1.91 3.32c-.11.2-.06.45.12.59l2.03 1.58c-.04.3-.06.61-.06.94s.02.64.06.94L2.86 14.5c-.18.14-.23.39-.12.59l1.91 3.32c.11.2.37.28.58.22l2.39-.96c.5.38 1.05.7 1.62.94l.38 2.43c.05.25.25.44.5.44h4c.25 0 .45-.19.5-.44l.38-2.43a7.007 7.007 0 001.62-.94l2.39.96c.21.06.47-.02.58-.22l1.91-3.32a.495.495 0 00-.12-.59l-2.03-1.56zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5S10.07 8.5 12 8.5s3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
-    <span>Settings</span>
-  </div>
-</div>
-</a>
-  
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <script src("https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js")></script>
   <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDR_rkTfGLWWX4NRWOVer9wwGlUFiRMRO4",
-    authDomain: "usdt-login.firebaseapp.com",
-    databaseURL: "https://usdt-login-default-rtdb.firebaseio.com",
-    projectId: "usdt-login",
-    storageBucket: "usdt-login.firebasestorage.app",
-    messagingSenderId: "807602854227",
-    appId: "1:807602854227:web:309ae73f572e48dbc7a9a6"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.database();
-  const REF_REWARD = 0.3;
+    const firebaseConfig = {
+      apiKey: "AIzaSyDR_rkTfGLWWX4NRWOVer9wwGlUFiRMRO4",
+      authDomain: "usdt-login.firebaseapp.com",
+      databaseURL: "https://usdt-login-default-rtdb.firebaseio.com",
+      projectId: "usdt-login",
+      storageBucket: "usdt-login.firebasestorage.app",
+      messagingSenderId: "807602854227",
+      appId: "1:807602854227:web:309ae73f572e48dbc7a9a6"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
 
-  // Redirect to login if user not signed in
-  auth.onAuthStateChanged(async (user) => {
-    if (!user) {
-      window.location.href = 'index.html';
-      return;
-    }
+    const CUSTOM_BASE = 'https://usdtmining.github.io/USDT/index.html';
+    const START_RANK = 534877;
 
-    const uid = user.uid;
-    const snap = await db.ref('users/' + uid).get();
-    if (!snap.exists()) {
-      window.location.href = 'index.html';
-      return;
-    }
+    const referralCountTopEl = document.getElementById('referralCountTop');
+    const userPositionTopEl = document.getElementById('userPositionTop');
+    const displayUsernameEl = document.getElementById('displayUsername');
+    const displayEmailEl = document.getElementById('displayEmail');
+    const referralCodeEl = document.getElementById('referralCode');
+    const referralLinkEl = document.getElementById('referralLink');
+    const referralCountEl = document.getElementById('referralCount');
+    const referralEarningsEl = document.getElementById('referralEarnings');
+    const balanceEl = document.getElementById('d_balance');
 
-    const u = snap.val();
-    document.getElementById('d_username_small').innerText = u.username;
-    document.getElementById('displayUsername').innerText = u.username;
-    document.getElementById('displayEmail').innerText = u.email || 'N/A';
-    document.getElementById('referralCode').innerText = u.referralCode;
-    document.getElementById('referralCount').innerText = (u.invited || 0);
-    document.getElementById('referralEarnings').innerText = '$' + ((u.referralEarnings || 0).toFixed(2));
-    document.getElementById('d_balance').innerText = '$' + ((u.balance || 0).toFixed(2));
-    document.getElementById('referralLink').innerText =
-      `${location.origin}${location.pathname.replace('referral.html', 'index.html')}?ref=${encodeURIComponent(u.referralCode)}`;
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const shareTextBtn = document.getElementById('shareTextBtn');
+    const shareImageBtn = document.getElementById('shareImageBtn');
+    const downloadImageBtn = document.getElementById('downloadImageBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
 
-    // Calculate rank based on referrals
-    const allSnap = await db.ref('users').get();
-    if (allSnap.exists()) {
-      const arr = [];
-      const all = allSnap.val();
-      for (const k in all) {
-        arr.push({ uid: k, invited: all[k].invited || 0 });
+    const canvas = document.getElementById('shareCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let userData = null;
+
+    auth.onAuthStateChanged(async user => {
+      if (!user) {
+        window.location.href = 'index.html';
+        return;
+      }
+      const uid = user.uid;
+      const snap = await db.ref('users/' + uid).get();
+      if (!snap.exists()) {
+        window.location.href = 'index.html';
+        return;
+      }
+      userData = snap.val();
+      await setupUser(userData, uid);
+    });
+
+    async function setupUser(u, uid) {
+      displayUsernameEl.innerText = u.username || '';
+      displayEmailEl.innerText = u.email || '';
+      referralCodeEl.innerText = u.referralCode || '';
+      referralCountEl.innerText = (u.invited || 0);
+      referralCountTopEl.innerText = (u.invited || 0);
+      referralEarningsEl.innerText = '$' + ((u.referralEarnings || 0).toFixed?.call ? u.referralEarnings.toFixed(2) : Number(u.referralEarnings||0).toFixed(2));
+      balanceEl.innerText = '$' + ((u.balance || 0).toFixed?.call ? u.balance.toFixed(2) : Number(u.balance||0).toFixed(2));
+
+      const myCode = u.referralCode;
+      const link = `${CUSTOM_BASE}?ref=${encodeURIComponent(myCode)}`;
+      referralLinkEl.innerText = link;
+
+      const allSnap = await db.ref('users').get();
+      if (allSnap.exists()) {
+        const arr = [];
+        const all = allSnap.val();
+        for (const k in all) {
+          arr.push({ uid: k, invited: all[k].invited || 0 });
+        }
+        arr.sort((a,b) => b.invited - a.invited);
+        const pos = arr.findIndex(x => x.uid === uid);
+        const rank = (pos < 0 ? START_RANK : START_RANK + pos);
+        userPositionTopEl.innerText = rank + 'th';
+      } else {
+        userPositionTopEl.innerText = START_RANK + 'th';
       }
 
-      // Sort by invited (highest first)
-      arr.sort((a, b) => b.invited - a.invited);
-      const pos = arr.findIndex(x => x.uid === uid);
-
-      // Highest referrer = 534,877, next = 534,878, etc.
-      const startRank = 534877;
-      const userRank = startRank + pos;
-
-      document.getElementById('userPosition').innerText = `${userRank}th`;
+      startCanvasAnimation(u.username, myCode, link, u.invited || 0);
     }
-  });
 
-  // Buttons
-  document.getElementById('logoutBtn').onclick = async () => {
-    await auth.signOut();
-    window.location.href = 'index.html';
-  };
-  document.getElementById('copyLinkBtn').onclick = () =>
-    navigator.clipboard.writeText(document.getElementById('referralLink').innerText).then(() => alert('Copied!'));
-  document.getElementById('copyCodeBtn').onclick = () =>
-    navigator.clipboard.writeText(document.getElementById('referralCode').innerText).then(() => alert('Copied!'));
-  document.getElementById('shareBtn').onclick = () => {
-    const code = document.getElementById('referralCode').innerText;
-    const link = document.getElementById('referralLink').innerText;
-    const text = `Join me on USDT Miner and earn free USDT! Use my referral code ${code}.\n${link}`;
-    if (navigator.share) navigator.share({ title: 'USDT Miner', text, url: link });
-    else navigator.clipboard.writeText(text).then(() => alert('Share text copied!'));
-  };
+    function startCanvasAnimation(username, code, link, invitedCount) {
+      let startTime = null;
+      let animFrame = null;
+
+      function animate(ts) {
+        if (!startTime) startTime = ts;
+        const elapsed = ts - startTime;
+
+        const dpr = window.devicePixelRatio || 1;
+        const cssW = Math.min(800, canvas.clientWidth || 800);
+        const cssH = Math.round(cssW * (480/800));
+        canvas.style.width = cssW + 'px';
+        canvas.style.height = cssH + 'px';
+        canvas.width = cssW * dpr;
+        canvas.height = cssH * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        ctx.clearRect(0,0, cssW, cssH);
+        // Background
+        const grad = ctx.createLinearGradient(0,0, cssW, cssH);
+        grad.addColorStop(0, '#002b20');
+        grad.addColorStop(0.5, '#004d3b');
+        grad.addColorStop(1, '#00362d');
+        ctx.fillStyle = grad;
+        roundRect(ctx, 0,0, cssW, cssH, 14);
+        ctx.fill();
+
+        // Glow circles
+        for (let i=0;i<3;i++){
+          const rad = 80 + 30*i + Math.sin((elapsed/800 + i)) * 8;
+          const alpha = 0.06 + 0.03 * Math.cos((elapsed/700)+i);
+          ctx.beginPath();
+          const x = cssW * (0.2 + 0.3*i);
+          const y = cssH * (0.2 + 0.15*i);
+          ctx.fillStyle = `rgba(0,255,170,${alpha})`;
+          ctx.arc(x, y, rad, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        // Pulse coin
+        const cx = cssW * 0.12;
+        const cy = cssH * 0.22;
+        const baseR = 40;
+        const pulse = 1 + 0.08 * Math.sin((elapsed/1000) * Math.PI * 0.8);
+        const glowAlpha = 0.22 + 0.12 * Math.sin((elapsed/950) * Math.PI * 0.9);
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(0,217,150,${glowAlpha})`;
+        ctx.arc(cx, cy, baseR * (1.8 * pulse), 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = '#00d996';
+        ctx.arc(cx, cy, baseR * pulse, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.fillStyle = '#003826';
+        ctx.font = `${24 * (cssW/800)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('₮', cx, cy);
+
+        // Title text
+        ctx.fillStyle = '#e8fff4';
+        ctx.font = `${22 * (cssW/800)}px sans-serif`;
+        ctx.textAlign = 'left';
+        ctx.fillText('Join USDT Miner & Earn Free USDT Daily', cssW*0.22, cssH*0.12);
+
+        // Username/code lines
+        ctx.font = `${18 * (cssW/800)}px sans-serif`;
+        ctx.fillStyle = '#e6fff3';
+        ctx.fillText(`Invited by: ${username}`, cssW*0.22, cssH*0.22);
+        ctx.fillStyle = '#c7f8e9';
+        ctx.fillText(`Referral Code: ${code}`, cssW*0.22, cssH*0.26);
+
+        // Referral link wrapped
+        ctx.font = `${14 * (cssW/800)}px mono`;
+        ctx.fillStyle = '#dfffea';
+        wrapCanvasText(ctx, link, cssW*0.22, cssH*0.315, cssW*0.56, 18);
+
+        // Invited badge
+        const bX = cssW * 0.22;
+        const bY = cssH * 0.38;
+        ctx.fillStyle = '#001f17';
+        roundRect(ctx, bX-8, bY-22, 160, 36, 10);
+        ctx.fillStyle = '#00ffb2';
+        ctx.font = `${16 * (cssW/800)}px sans-serif`;
+        ctx.fillText(`Total Invited: ${invitedCount}`, bX+20, bY);
+
+        // Footer
+        ctx.font = `${12 * (cssW/800)}px sans-serif`;
+        ctx.fillStyle = '#bfeee0';
+        ctx.fillText('Earn $0.30 per invite for both parties', cssW*0.06, cssH*0.92);
+
+        animFrame = requestAnimationFrame(animate);
+      }
+
+      if (animFrame) cancelAnimationFrame(animFrame);
+      startTime = null;
+      animFrame = requestAnimationFrame(animate);
+    }
+
+    function roundRect(ctx, x,y,w,h,r) {
+      if (w < 2*r) r = w/2;
+      if (h < 2*r) r = h/2;
+      ctx.beginPath();
+      ctx.moveTo(x+r, y);
+      ctx.arcTo(x+w, y,   x+w, y+h, r);
+      ctx.arcTo(x+w, y+h, x,   y+h, r);
+      ctx.arcTo(x,   y+h, x,   y,   r);
+      ctx.arcTo(x,   y,   x+w, y,   r);
+      ctx.closePath();
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+      const words = text.split(' ');
+      let line = '';
+      for (let n=0; n<words.length; n++){
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0){
+          ctx.fillText(line, x, y);
+          line = words[n] + ' ';
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, y);
+    }
+
+    async function captureCanvasBlob() {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+          if (blob) resolve(blob);
+          else reject(new Error('Canvas toBlob failed'));
+        }, 'image/png', 0.95);
+      });
+    }
+
+    shareImageBtn.addEventListener('click', async ()=>{
+      try {
+        const blob = await captureCanvasBlob();
+        const fileArr = [ new File([blob], 'usdt_referral.png', { type: blob.type }) ];
+        const code = referralCodeEl.innerText;
+        const link = referralLinkEl.innerText;
+        if (navigator.canShare && navigator.canShare({ files: fileArr })){
+          await navigator.share({
+            title: 'USDT Miner Referral',
+            text: `Join USDT Miner! Use code ${code}`,
+            files: fileArr,
+            url: link
+          });
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'usdt_referral.png';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+          alert('Image downloaded. Share it manually.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Sharing image failed');
+      }
+    });
+
+    downloadImageBtn.addEventListener('click', async ()=>{
+      try {
+        const blob = await captureCanvasBlob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'usdt_referral.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        alert('Image downloaded');
+      } catch (err) {
+        console.error(err);
+        alert('Download failed');
+      }
+    });
+
   </script>
-  <script src="usdt.js"></script>
 </body>
 </html>
