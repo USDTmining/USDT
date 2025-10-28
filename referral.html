@@ -1,70 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>USDT Miner — Referral Dashboard</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>USDT Miner — Referral Dashboard</title>
 
-<!-- Open Graph meta so when the referral link is pasted/shared a thumbnail + text appears -->
-<meta property="og:title" content="Join USDT Miner & Earn Free USDT Daily!" />
-<meta property="og:description" content="Mine USDT and invite friends — both you and your friend get $0.30 when they sign up." />
-<meta property="og:image" content="https://usdtmining.github.io/USDT/assets/referral-banner.png" />
-<meta property="og:url" content="https://usdtmining.github.io/USDT/index.html" />
+  <!-- OG tags so platforms show the thumbnail when link is pasted/shared -->
+  <meta property="og:title" content="Join USDT Miner & Earn Free USDT Daily!" />
+  <meta property="og:description" content="Mine USDT and invite friends — both get $0.30 when they sign up." />
+  <meta property="og:image" content="https://usdtmining.github.io/USDT/assets/referral-banner.png" />
+  <meta property="og:url" content="https://usdtmining.github.io/USDT/index.html" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-<style>
-  :root{
-    --bg1:#061f18; --card:#f6fff8; --accent1:#00d996; --accent2:#008f63; --muted:#6b8a81;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    min-height:100vh;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-    background: linear-gradient(180deg,var(--bg1), #01312b);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    color:#053528;
-  }
-  .app{
-    width:95%; max-width:980px; background:var(--card); border-radius:14px; padding:18px; box-shadow:0 22px 60px rgba(0,0,0,0.45);
-  }
-  .banner{
-    display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; background:linear-gradient(90deg,#eafff0,#e0fff2);
-  }
-  .banner img{ width:64px; height:64px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.12); }
-  .banner h2{ margin:0; color:#006b57; font-size:18px; }
-  .banner p{ margin:0; color:var(--muted); font-size:13px; }
-
-  .top-cards{ display:flex; gap:12px; margin-top:16px; flex-wrap:wrap; }
-  .card-stat{ flex:1; min-width:160px; background:linear-gradient(180deg,#fff,#f0fff7); padding:12px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.06); text-align:center; }
-  .card-stat h4{ margin:0; color:#006b57; font-size:13px }
-  .card-stat p{ margin:6px 0 0; font-weight:800; font-size:20px }
-
-  .info-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
-  .info-box{ background:#fff; padding:12px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,0.05); }
-  .info-box label{ display:block; font-size:13px; color:#006b57; margin-bottom:6px; }
-  .info-box .value{ font-weight:700; color:#04312a; }
-
-  .link-box{ margin-top:12px; display:flex; gap:8px; align-items:center; }
-  .link-display{ flex:1; background:#eef7f1; padding:10px; border-radius:10px; word-break:break-all; color:#006b57; font-weight:700; }
-  .btns{ display:flex; gap:8px; margin-top:12px; flex-direction:column; }
-  button{ border:none; padding:12px 14px; border-radius:10px; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:10px; justify-content:center; }
-  .copy-btn{ background:linear-gradient(180deg,var(--accent1),var(--accent2)); color:#fff; }
-  .share-btn{ background:#25D366; color:#fff; }
-  .icon-left{ width:18px; height:18px; display:inline-block; }
-
-  footer{ text-align:center; margin-top:18px; color:#064f40; font-size:13px; }
-
-  @media (max-width:760px){ .info-grid{ grid-template-columns:1fr } .top-cards{ flex-direction:column } .btns{ flex-direction:column } }
-</style>
+  <style>
+    :root{ --bg1:#061f18; --card:#f6fff8; --accent1:#00d996; --accent2:#008f63; --muted:#6b8a81 }
+    *{box-sizing:border-box}
+    body{ margin:0; min-height:100vh; font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial; background: linear-gradient(180deg,var(--bg1),#01312b); display:flex; align-items:center; justify-content:center; padding:20px; color:#053528; }
+    .app{ width:95%; max-width:980px; background:var(--card); border-radius:14px; padding:18px; box-shadow:0 22px 60px rgba(0,0,0,0.45) }
+    .banner{ display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; background:linear-gradient(90deg,#eafff0,#e0fff2) }
+    .banner img{ width:64px; height:64px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.12) }
+    .banner h2{ margin:0; color:#006b57; font-size:18px }
+    .banner p{ margin:0; color:var(--muted); font-size:13px }
+    .top-cards{ display:flex; gap:12px; margin-top:16px; flex-wrap:wrap }
+    .card-stat{ flex:1; min-width:160px; background:linear-gradient(180deg,#fff,#f0fff7); padding:12px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.06); text-align:center }
+    .card-stat h4{ margin:0; color:#006b57; font-size:13px }
+    .card-stat p{ margin:6px 0 0; font-weight:800; font-size:20px }
+    .info-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px }
+    .info-box{ background:#fff; padding:12px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,0.05) }
+    .info-box label{ display:block; font-size:13px; color:#006b57; margin-bottom:6px }
+    .info-box .value{ font-weight:700; color:#04312a }
+    .link-box{ margin-top:12px; display:flex; gap:8px; align-items:center }
+    .link-display{ flex:1; background:#eef7f1; padding:10px; border-radius:10px; word-break:break-all; color:#006b57; font-weight:700 }
+    .btns{ display:flex; gap:8px; margin-top:12px; flex-direction:column }
+    button{ border:none; padding:12px 14px; border-radius:10px; cursor:pointer; font-weight:700; display:flex; align-items:center; gap:10px; justify-content:center }
+    .copy-btn{ background: linear-gradient(180deg,var(--accent1),var(--accent2)); color:#fff }
+    .share-btn{ background:#25D366; color:#fff }
+    .icon-left{ width:18px; height:18px; display:inline-block }
+    footer{ text-align:center; margin-top:18px; color:#064f40; font-size:13px }
+    @media (max-width:760px){ .info-grid{ grid-template-columns:1fr } .top-cards{ flex-direction:column } .btns{ flex-direction:column } }
+  </style>
 </head>
 <body>
   <div class="app" role="main" aria-live="polite">
-    <div class="banner" role="banner" aria-hidden="false">
+    <div class="banner" role="banner">
       <img src="https://usdtmining.github.io/USDT/assets/referral-banner.png" alt="Invite & Earn Banner"/>
       <div>
         <h2>Invite & Earn — $0.30 per Friend</h2>
@@ -73,47 +52,31 @@
     </div>
 
     <div class="top-cards">
-      <div class="card-stat">
-        <h4>Referrals</h4>
-        <p id="referralCount">0</p>
-      </div>
-      <div class="card-stat">
-        <h4>Referral Earnings</h4>
-        <p>$<span id="referralEarnings">0.00</span></p>
-      </div>
+      <div class="card-stat"><h4>Referrals</h4><p id="referralCount">0</p></div>
+      <div class="card-stat"><h4>Referral Earnings</h4><p>$<span id="referralEarnings">0.00</span></p></div>
     </div>
 
     <div class="info-grid">
       <div class="info-box">
-        <label>Username</label>
-        <div class="value" id="displayUsername">—</div>
-        <label style="margin-top:10px">Email</label>
-        <div class="value" id="displayEmail">—</div>
+        <label>Username</label><div class="value" id="displayUsername">—</div>
+        <label style="margin-top:10px">Email</label><div class="value" id="displayEmail">—</div>
       </div>
       <div class="info-box">
-        <label>Referral Code</label>
-        <div class="value" id="referralCode">—</div>
-        <label style="margin-top:10px">Position</label>
-        <div class="value" id="userPosition">—</div>
+        <label>Referral Code</label><div class="value" id="referralCode">—</div>
+        <label style="margin-top:10px">Position</label><div class="value" id="userPosition">—</div>
       </div>
     </div>
 
-    <div class="link-box" role="region" aria-label="Referral link">
+    <div class="link-box" aria-label="Referral link area">
       <div id="referralLink" class="link-display">Loading...</div>
     </div>
 
-    <div class="btns" aria-hidden="false">
-      <button class="copy-btn" id="copyLinkBtn">
-        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" class="icon-left" alt="copy icon" />
-        Copy Referral Link
-      </button>
-      <button class="share-btn" id="shareBtn">
-        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384017.png" class="icon-left" alt="share icon" />
-        Share & Invite Friends
-      </button>
+    <div class="btns">
+      <button class="copy-btn" id="copyLinkBtn"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" class="icon-left" alt="copy" />Copy Referral Link</button>
+      <button class="share-btn" id="shareBtn"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384017.png" class="icon-left" alt="share" />Share & Invite Friends</button>
     </div>
 
-    <footer>USDT Miner — Referral Dashboard (Realtime DB)</footer>
+    <footer>USDT Miner — Referral Dashboard (Realtime)</footer>
   </div>
 
   <!-- Firebase compat -->
@@ -122,106 +85,94 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
   <script>
-  // Firebase config (same as index)
-  const firebaseConfig = {
-    apiKey: "AIzaSyDR_rkTfGLWWX4NRWOVer9wwGlUFiRMRO4",
-    authDomain: "usdt-login.firebaseapp.com",
-    databaseURL: "https://usdt-login-default-rtdb.firebaseio.com",
-    projectId: "usdt-login",
-    storageBucket: "usdt-login.firebasestorage.app",
-    messagingSenderId: "807602854227",
-    appId: "1:807602854227:web:309ae73f572e48dbc7a9a6"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.database();
+    // ---------- CONFIG ----------
+    const firebaseConfig = {
+      apiKey: "AIzaSyDR_rkTfGLWWX4NRWOVer9wwGlUFiRMRO4",
+      authDomain: "usdt-login.firebaseapp.com",
+      databaseURL: "https://usdt-login-default-rtdb.firebaseio.com",
+      projectId: "usdt-login",
+      storageBucket: "usdt-login.firebasestorage.app",
+      messagingSenderId: "807602854227",
+      appId: "1:807602854227:web:309ae73f572e48dbc7a9a6"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
 
-  const REF_REWARD = 0.3;
-  const BASE_POSITION = 834597;
+    const REF_REWARD = 0.3;
+    const BASE_POSITION = 834597;
 
-  // UI refs
-  const displayUsername = document.getElementById('displayUsername');
-  const displayEmail = document.getElementById('displayEmail');
-  const referralCodeEl = document.getElementById('referralCode');
-  const referralLinkEl = document.getElementById('referralLink');
-  const referralCountEl = document.getElementById('referralCount');
-  const referralEarningsEl = document.getElementById('referralEarnings');
-  const userPositionEl = document.getElementById('userPosition');
-  const copyLinkBtn = document.getElementById('copyLinkBtn');
-  const shareBtn = document.getElementById('shareBtn');
+    // UI refs
+    const displayUsername = document.getElementById('displayUsername');
+    const displayEmail = document.getElementById('displayEmail');
+    const referralCodeEl = document.getElementById('referralCode');
+    const referralLinkEl = document.getElementById('referralLink');
+    const referralCountEl = document.getElementById('referralCount');
+    const referralEarningsEl = document.getElementById('referralEarnings');
+    const userPositionEl = document.getElementById('userPosition');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const shareBtn = document.getElementById('shareBtn');
 
-  // auth guard + render
-  auth.onAuthStateChanged(async (user) => {
-    if(!user) {
-      // require login
-      window.location.href = 'index.html';
-      return;
-    }
-    const uid = user.uid;
-    const snap = await db.ref('users/' + uid).get();
-    if(!snap.exists()){
-      alert('User record not found. Please login again.');
-      auth.signOut();
-      window.location.href = 'index.html';
-      return;
-    }
-    const u = snap.val();
-    displayUsername.innerText = u.username || 'N/A';
-    displayEmail.innerText = u.email || 'N/A';
-    referralCodeEl.innerText = u.referralCode || 'N/A';
-    referralCountEl.innerText = (u.invited || 0);
-    referralEarningsEl.innerText = (u.referralEarnings || 0).toFixed(2);
+    let userUid = null;
+    let userRefListener = null;
+    let usersListListener = null;
 
-    // referral link should point to index.html root with ref param
-    referralLinkEl.innerText = `${window.location.origin}/USDT/index.html?ref=${encodeURIComponent(u.referralCode)}`;
-
-    // compute position by sorting invited desc (top inviter has position BASE_POSITION)
-    const allSnap = await db.ref('users').get();
-    if(allSnap.exists()){
-      const all = allSnap.val();
-      const list = [];
-      for(const k in all){
-        list.push({ id:k, invited: all[k].invited || 0 });
+    // auth guard & initial render
+    auth.onAuthStateChanged(async (user) => {
+      if(!user){
+        window.location.href = 'index.html';
+        return;
       }
-      list.sort((a,b)=> b.invited - a.invited );
-      const pos = list.findIndex(i => i.id === uid);
-      const rank = (BASE_POSITION + (pos >= 0 ? pos : list.length));
-      userPositionEl.innerText = rank.toLocaleString();
-    } else {
-      userPositionEl.innerText = BASE_POSITION.toLocaleString();
-    }
-  });
+      userUid = user.uid;
+      // listen to this user's node for live updates
+      if(userRefListener) db.ref('users/' + userUid).off('value', userRefListener);
+      userRefListener = db.ref('users/' + userUid).on('value', (snap) => {
+        if(!snap.exists()) return;
+        const u = snap.val();
+        displayUsername.innerText = u.username || 'N/A';
+        displayEmail.innerText = u.email || 'N/A';
+        referralCodeEl.innerText = u.referralCode || 'N/A';
+        referralCountEl.innerText = (u.invited || 0);
+        referralEarningsEl.innerText = (u.referralEarnings || 0).toFixed(2);
+        referralLinkEl.innerText = `${window.location.origin}/USDT/index.html?ref=${encodeURIComponent(u.referralCode)}`;
+      });
 
-  // copy button
-  copyLinkBtn.addEventListener('click', async ()=>{
-    const text = referralLinkEl.innerText || '';
-    try{
-      await navigator.clipboard.writeText(text);
-      alert('Referral link copied!');
-    }catch(e){
-      console.warn('Clipboard failed',e);
-      prompt('Copy this link:', text);
-    }
-  });
+      // listen to full users list to compute live position ranking
+      if(usersListListener) db.ref('users').off('value', usersListListener);
+      usersListListener = db.ref('users').on('value', (snap)=>{
+        if(!snap.exists()) return;
+        const all = snap.val();
+        const arr = [];
+        for(const k in all){
+          arr.push({ id:k, invited: all[k].invited || 0 });
+        }
+        arr.sort((a,b)=> b.invited - a.invited );
+        const pos = arr.findIndex(i => i.id === userUid);
+        const rank = BASE_POSITION + (pos >= 0 ? pos : arr.length);
+        userPositionEl.innerText = rank.toLocaleString();
+      });
+    });
 
-  // share button (native share API where available)
-  shareBtn.addEventListener('click', async ()=>{
-    const link = referralLinkEl.innerText || '';
-    const title = 'Join USDT Miner & Earn Free USDT Daily!';
-    const text = `Join me on USDT Miner and get $0.30 when you sign up using my referral link. ${link}`;
-    try{
-      if(navigator.share){
-        await navigator.share({ title, text, url: link });
-      } else {
-        await navigator.clipboard.writeText(`${title}\n${text}\n${link}`);
-        alert('Share text copied to clipboard. Paste it into your socials.');
+    // copy link
+    copyLinkBtn.addEventListener('click', async ()=>{
+      const text = referralLinkEl.innerText || '';
+      try{ await navigator.clipboard.writeText(text); alert('Referral link copied!'); }
+      catch(e){ console.warn('Clipboard failed',e); prompt('Copy this link:', text); }
+    });
+
+    // share link (native)
+    shareBtn.addEventListener('click', async ()=>{
+      const link = referralLinkEl.innerText || '';
+      const title = 'Join USDT Miner & Earn Free USDT Daily!';
+      const text = `Join me on USDT Miner and get $0.30 when you sign up using my referral link. ${link}`;
+      try{
+        if(navigator.share) await navigator.share({ title, text, url: link });
+        else { await navigator.clipboard.writeText(`${title}\n${text}\n${link}`); alert('Share text copied to clipboard.'); }
+      }catch(e){
+        console.warn('Share failed', e);
+        try{ await navigator.clipboard.writeText(`${title}\n${text}\n${link}`); alert('Share text copied to clipboard.'); }catch(_){ prompt('Copy this text:', `${title}\n${text}\n${link}`); }
       }
-    }catch(e){
-      console.warn('Share failed:', e);
-      try{ await navigator.clipboard.writeText(`${title}\n${text}\n${link}`); alert('Share text copied to clipboard.'); }catch(_){ prompt('Copy this text to share:', `${title}\n${text}\n${link}`); }
-    }
-  });
+    });
   </script>
 </body>
 </html>
-
