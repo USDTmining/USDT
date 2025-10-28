@@ -156,7 +156,7 @@ function showPage(page) {
           if(arr.includes(d)){
             streak++;
             if(streak===2)bonus+=0.05;
-            if(streak===5)bonus+=0.5;
+            if(streak===5)bonus+=0.35;
           } else streak=0;
         });
         if(bonus){
@@ -176,8 +176,8 @@ function showPage(page) {
         if (remain <= 0) {
           clearInterval(timer);
           countdownEl.textContent = '00:00:00';
-          minedEl.textContent = '+1.72800';
-          const finalBalance = base + 1.728;
+          minedEl.textContent = '+0.72800';
+          const finalBalance = base + 0.728;
           setBalance(finalBalance);
           set('balance', finalBalance);
           localStorage.removeItem('startTime');
