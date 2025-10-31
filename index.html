@@ -158,21 +158,268 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
 <script>
-/*
-  IMPORTANT:
-  - This file uses only Firebase (Auth + Realtime Database).
-  - Make sure your Realtime DB rules allow reads/writes for your testing. Example dev rules:
-    {
-      "rules": {
-        ".read": true,
-        ".write": true
+const firebaseConfig = {
+  apiKey: "AIzaSyDR_rkTfGLWWX4NRWOVer9wwGlUFiRMRO4",
+  authDomain: "usdt-login.firebaseapp.com",
+  databaseURL: "https://usdt-login-default-rtdb.firebaseio.com",
+  projectId: "usdt-login",
+  storageBucket: "usdt-login.firebasestorage.app",
+  messagingSenderId: "807602854227",
+  appId: "1:807602854227:web:309ae73f572e48dbc7a9a6"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+const REF_IMAGE = 'https://coachflux.github.io/Ref/img/usdt.webp';
+const REF_REWARD = 0.3;
+
+// UI references
+const registerCard = document.getElementById('registerCard');
+const loginCard = document.getElementById('loginCard');
+const referralCard = document.getElementById('referralCard');
+const registerBtn = document.getElementById('registerBtn');
+const loginBtn = document.getElementById('loginBtn');
+
+// Modal handlers
+document.getElementById('openTC').onclick = () => {
+  document.getElementById('termsModal').style.display = 'flex';
+};
+document.getElementById('closeTC').onclick = () => {
+  document.getElementById('termsModal').style.display = 'none';
+};
+
+// Show/hide card functions
+function showLogin() {
+  loginCard.classList.remove('hidden');
+  registerCard.classList.add('hidden');
+  referralCard.classList.add('hidden');
+}
+function showRegister() {
+  registerCard.classList.remove('hidden');
+  loginCard.classList.add('hidden');
+  referralCard.classList.add('hidden');
+}
+function showReferralCard() {
+  referralCard.classList.remove('hidden');
+  loginCard.classList.add('hidden');
+  registerCard.classList.add('hidden');
+  displayReferralInfo();
+}
+
+// Helper functions
+function generateReferralCode(username) {
+  return username + Math.floor(Math.random() * 10000);
+}
+async function usernameExists(username) {
+  const snap = await db.ref('usernames/' + username).get();
+  return snap.exists();
+}
+async function uidForUsername(username) {
+  const snap = await db.ref('usernames/' + username).get();
+  return snap.exists() ? snap.val() : null;
+}
+async function uidForReferralCode(code) {
+  const snap = await db.ref('referralCodes/' + code).get();
+  return snap.exists() ? snap.val() : null;
+}
+
+// Register user
+async function registerUser() {
+  registerBtn.disabled = true;
+  registerBtn.innerText = 'Registering...';
+  try {
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const inviterInput = document.getElementById('inviterCode').value.trim();
+    const agree = document.getElementById('agreeTC').checked;
+
+    if (!username || !email || !password) {
+      alert('Please fill all required fields.');
+      return;
+    }
+    if (!agree) {
+      alert('You must agree to the Terms & Conditions.');
+      return;
+    }
+    if (await usernameExists(username)) {
+      alert('Username already exists. Choose another one.');
+      return;
+    }
+
+    // Create user
+    const userCred = await auth.createUserWithEmailAndPassword(email, password);
+    const uid = userCred.user.uid;
+
+    const referralCode = generateReferralCode(username);
+    const urlRef = new URLSearchParams(location.search).get('ref');
+    const incomingRef = inviterInput || urlRef || '';
+
+    const userObj = {
+      uid,
+      username,
+      email,
+      referralCode,
+      invited: 0,
+      referralEarnings: incomingRef ? REF_REWARD : 0,
+      balance: incomingRef ? REF_REWARD : 0,
+      createdAt: new Date().toISOString()
+    };
+
+    await db.ref('users/' + uid).set(userObj);
+    await db.ref('usernames/' + username).set(uid);
+    await db.ref('uids/' + uid).set(username);
+    await db.ref('referralCodes/' + referralCode).set(uid);
+
+    // Handle referral reward
+    if (incomingRef) {
+      const inviterUid = await uidForReferralCode(incomingRef);
+      if (inviterUid) {
+        const inviterRef = db.ref('users/' + inviterUid);
+        const inviterSnap = await inviterRef.get();
+        if (inviterSnap.exists()) {
+          const inviter = inviterSnap.val();
+          await inviterRef.update({
+            invited: (inviter.invited || 0) + 1,
+            referralEarnings: (inviter.referralEarnings || 0) + REF_REWARD,
+            balance: (inviter.balance || 0) + REF_REWARD
+          });
+        }
       }
     }
-  - For production, restrict writes/reads accordingly.
-*/
 
+    alert('Registration successful! Please login.');
+    showLogin();
+  } catch (e) {
+    console.error(e);
+    alert('Registration failed. Try again.');
+  } finally {
+    registerBtn.disabled = false;
+    registerBtn.innerText = 'Register';
+  }
+}
 
-          
+// Login user
+async function loginUser() {
+  loginBtn.disabled = true;
+  loginBtn.innerText = 'Checking...';
+  try {
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    if (!username || !password) {
+      alert('Enter credentials.');
+      return;
+    }
+
+    const uid = await uidForUsername(username);
+    if (!uid) {
+      alert('Invalid username or password.');
+      return;
+    }
+
+    const emailSnap = await db.ref('users/' + uid + '/email').get();
+    if (!emailSnap.exists()) {
+      alert('Invalid username or password.');
+      return;
+    }
+
+    const email = emailSnap.val();
+    await auth.signInWithEmailAndPassword(email, password);
+    window.location.href = 'mine.html';
+  } catch (e) {
+    console.warn(e);
+    alert('Login failed.');
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.innerText = 'Login';
+  }
+}
+
+// Display referral info
+async function displayReferralInfo() {
+  const user = auth.currentUser;
+  if (!user) {
+    showLogin();
+    return;
+  }
+
+  const uid = user.uid;
+  const snap = await db.ref('users/' + uid).get();
+  if (!snap.exists()) {
+    showLogin();
+    return;
+  }
+
+  const u = snap.val();
+  document.getElementById('d_username_small').innerText = u.username;
+  document.getElementById('displayUsername').innerText = u.username;
+  document.getElementById('displayEmail').innerText = u.email;
+  document.getElementById('referralCode').innerText = u.referralCode;
+
+  const baseLink = `${location.origin}${location.pathname.replace(/\/[^/]*$/, '')}/index.html?ref=${encodeURIComponent(u.referralCode)}`;
+  document.getElementById('referralLink').innerText = baseLink;
+  document.getElementById('referralCount').innerText = u.invited || 0;
+  document.getElementById('referralEarnings').innerText = '$' + (u.referralEarnings || 0).toFixed(2);
+  document.getElementById('d_balance').innerText = '$' + (u.balance || 0).toFixed(2);
+
+  // Ranking logic starting from 834577 for top referrer
+  const allSnap = await db.ref('users').get();
+  if (allSnap.exists()) {
+    const users = Object.values(allSnap.val());
+    users.sort((a, b) => (b.invited || 0) - (a.invited || 0));
+    const rankIndex = users.findIndex(x => x.uid === uid);
+    const position = 834577 + rankIndex;
+    document.getElementById('userPosition').innerText = position + 'th';
+  }
+}
+
+// Share and Copy
+function copyText(id) {
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text)
+    .then(() => alert('Copied!'))
+    .catch(() => alert('Copy failed'));
+}
+
+function shareReferral() {
+  const code = document.getElementById('referralCode').innerText;
+  const link = document.getElementById('referralLink').innerText;
+  const shareData = {
+    title: 'Join USDT Miner — Earn Free USDT!',
+    text: `Join me on USDT Miner and earn free USDT instantly!\nUse my referral code: ${code}\n\nRegister here: ${link}`,
+    url: link
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData).catch(() => {
+      navigator.clipboard.writeText(shareData.text);
+      alert('Share failed, copied to clipboard.');
+    });
+  } else {
+    navigator.clipboard.writeText(shareData.text);
+    alert('Copied referral message to clipboard!');
+  }
+}
+
+// Auth listener
+auth.onAuthStateChanged(user => {
+  if (user) {
+    showReferralCard();
+  } else {
+    showLogin();
+  }
+});
+
+// Wire up buttons
+registerBtn.onclick = registerUser;
+loginBtn.onclick = loginUser;
+document.getElementById('createAccountBtn').onclick = e => { e.preventDefault(); showRegister(); };
+document.getElementById('gotoLogin').onclick = e => { e.preventDefault(); showLogin(); };
+document.getElementById('copyLinkBtn').onclick = () => copyText('referralLink');
+document.getElementById('copyCodeBtn').onclick = () => copyText('referralCode');
+document.getElementById('shareBtn').onclick = shareReferral;
+document.getElementById('logoutBtn').onclick = async () => { await auth.signOut(); showLogin(); alert('Logged out.'); };
 
 // start notifications
 startNotificationListener();
