@@ -110,6 +110,10 @@
 </head>
 <body>
   <header>USDT Referral Dashboard</header>
+  <div class="details">
+      Invite your friends and earn <b>$0.3</b> per invite!<br>
+      You and your friend both earn when they join using your link.
+    </div>
   <div class="banner"></div>
 
   <div class="container">
@@ -123,6 +127,9 @@
       <div id="referralEarnings" class="stat-value">0.00</div>
     </div>
 
+    <div class="label"><label>Username</label><div class="value" id="displayUsername"></div></div>
+    <div class="label"><label>Email</label><div class="value" id="displayEmail"></div></div>
+    
     <div class="label">Referral Code</div>
     <input type="text" id="referralCode" readonly>
 
@@ -134,10 +141,7 @@
       <button id="shareBtn"><img src="share-icon.png" alt="">Share</button>
     </div>
 
-    <div class="details">
-      Invite your friends and earn <b>$0.3</b> per invite!<br>
-      You and your friend both earn when they join using your link.
-    </div>
+    
   </div>
 
   <!-- Firebase -->
