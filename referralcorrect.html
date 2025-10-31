@@ -150,9 +150,37 @@
 
     <div class="grid">
       <!-- REGISTER CARD -->
-      
+      <div class="card hidden" id="registerCard">
+        <h3>Create account</h3>
+        <div class="field"><label for="username">Username</label><input id="username" type="text" autocomplete="username" /></div>
+        <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" /></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="new-password" /></div>
+        <div class="field"><label for="inviterCode">Referral Code (optional)</label><input id="inviterCode" type="text" /></div>
+
+        <div class="tc-row">
+          <input id="agreeTC" type="checkbox" />
+          <div><label for="agreeTC" id="tcLabel">I agree to the <span class="terms-link" id="openTC">Terms &amp; Conditions</span></label></div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button id="registerBtn">Register</button>
+          <button id="installBtn">Install App</button>
+        </div>
+
+        <p style="margin-top:10px">Already have an account? <a href="#" id="gotoLogin">Login here</a></p>
+      </div>
 
       <!-- LOGIN CARD -->
+      <div class="card hidden" id="loginCard">
+        <h3>Login</h3>
+        <div class="field"><label for="loginUsername">Username</label><input id="loginUsername" type="text" autocomplete="username" /></div>
+        <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" /></div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button id="loginBtn">Login</button>
+          <button id="createAccountBtn">Create account</button>
+        </div>
+        <p style="margin-top:10px">Forgot password? (demo) — contact admin to reset.</p>
+      </div>
       
 
       <!-- REFERRAL DASHBOARD -->
@@ -229,8 +257,7 @@
     <span>Settings</span>
   </div>
   </a>
-</div>
-    
+</dcar    
     <footer>USDT Miner — $ (Realtime DB + Auth)</footer>
   </div>
 
