@@ -121,6 +121,93 @@
     .app{padding:10px}
     .card{padding:14px}
   }
+
+  .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: #031e1e;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top-left-radius: 30px;
+      border-top-right-radius: 30px;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+    }
+
+    .nav-item {
+      text-align: center;
+      color: #aaa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-item svg {
+      width: 25px;
+      height: 25px;
+      fill: #888;
+      transition: transform 0.3s ease, fill 0.3s ease;
+    }
+
+    .nav-item span {
+      font-size: 0.7rem;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .nav-item.active svg,
+    .nav-item:hover svg {
+      fill: #00ff99;
+      transform: scale(1.2) rotate(360deg);
+    }
+
+    .nav-item.active span {
+      display: block;
+      color: #00ff99;
+    }
+
+    .mine-icon {
+      position: relative;
+      top: -15px;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle at 30% 30%, #00ffcc, #00775e);
+      border-radius: 50%;
+      box-shadow: 0 0 15px #00ffcc, inset 5px 5px 10px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 4px solid #031e1e;
+      transition: transform 0.3s ease;
+    }
+
+    .mine-icon svg {
+      width: 30px;
+      height: 30px;
+      fill: #ffffff;
+      filter: drop-shadow(0 0 4px #00ffcc);
+    }
+
+    .mine-label {
+      position: absolute;
+      top: 76px;
+      font-size: 0.7rem;
+      color: #00ffcc;
+      font-weight: bold;
+    }
+
+    a.mine-link {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 </style>
 </head>
 <body>
