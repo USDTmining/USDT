@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KYC Verification</title>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #e0e5ec;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+
+  .kyc-container {
+    background: #e0e5ec;
+    border-radius: 20px;
+    box-shadow: 8px 8px 16px #a3b1c6,
+                -8px -8px 16px #ffffff;
+    padding: 30px;
+    text-align: center;
+    width: 90%;
+    max-width: 380px;
+  }
+
+  .kyc-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #e0e5ec;
+    box-shadow: inset 6px 6px 12px #b8c6db,
+                inset -6px -6px 12px #ffffff;
+    margin-bottom: 20px;
+  }
+
+  .start-btn {
+    background: #e0e5ec;
+    border: none;
+    outline: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 5px 5px 10px #b8c6db,
+                -5px -5px 10px #ffffff;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  .start-btn:active {
+    box-shadow: inset 5px 5px 10px #b8c6db,
+                inset -5px -5px 10px #ffffff;
+  }
+
+  /* Popup background overlay */
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  /* Popup box */
+  .popup-content {
+    background: #e0e5ec;
+    border-radius: 20px;
+    box-shadow: 8px 8px 16px #a3b1c6,
+                -8px -8px 16px #ffffff;
+    padding: 25px;
+    text-align: center;
+    width: 85%;
+    max-width: 320px;
+    color: #333;
+    font-size: 14px;
+    animation: heartbeat 1.2s infinite;
+  }
+
+  .popup-content p {
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+
+  /* Buttons inside popup */
+  .popup button {
+    background: #e0e5ec;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    margin-top: 10px;
+    box-shadow: 5px 5px 10px #b8c6db,
+                -5px -5px 10px #ffffff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
+
+  .popup button:active {
+    box-shadow: inset 5px 5px 10px #b8c6db,
+                inset -5px -5px 10px #ffffff;
+  }
+
+  /* Animations */
+  @keyframes heartbeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.05); }
+    40% { transform: scale(1); }
+    60% { transform: scale(1.07); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="kyc-container">
+  <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="KYC Image">
+  <h2>KYC Verification</h2>
+  <p>Complete your KYC to enable withdrawals.</p>
+  <button class="start-btn" id="startKycBtn">Start KYC</button>
+</div>
+
+<!-- Popup 1 -->
+<div class="popup" id="popup1">
+  <div class="popup-content">
+    <p><strong>You must reach Supreme Rank</strong><br>
+    before you will be eligible for USDT Miner KYC.</p>
+    <button id="closePopup1">Close</button>
+  </div>
+</div>
+
+<!-- Popup 2 -->
+<div class="popup" id="popup2">
+  <div class="popup-content">
+    <p><strong>No KYC, No withdrawal.</strong><br><br>
+    But any wallet address submitted during completion of tasks will be credited after task count down.</p>
+    <button id="closePopup2">Close</button>
+  </div>
+</div>
+
+<script>
+  const startKycBtn = document.getElementById('startKycBtn');
+  const popup1 = document.getElementById('popup1');
+  const popup2 = document.getElementById('popup2');
+  const closePopup1 = document.getElementById('closePopup1');
+  const closePopup2 = document.getElementById('closePopup2');
+
+  startKycBtn.addEventListener('click', () => {
+    popup1.style.display = 'flex';
+  });
+
+  closePopup1.addEventListener('click', () => {
+    popup1.style.display = 'none';
+    popup2.style.display = 'flex';
+  });
+
+  closePopup2.addEventListener('click', () => {
+    popup2.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
