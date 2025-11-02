@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KYC Verification — Mobile</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+  :root{
+    --bg: #0f1720;
+    --card: #122233;
+    --muted: #9fbfd4;
+    --accent: linear-gradient(135deg,#00d4ff,#0066ff);
+    --glass: rgba(255,255,255,0.03);
+    --success: #27d07d;
+  }
+
+  html,body{height:100%;margin:0;background:
+    radial-gradient(1200px 400px at 10% 10%, rgba(0,195,255,0.06), transparent),
+    radial-gradient(800px 300px at 90% 90%, rgba(0,114,255,0.03), transparent),
+    var(--bg);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:#e8faff;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* container */
+  .app {
+    max-width:420px;
+    margin:18px auto;
+    padding:18px;
+  }
+
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+    border-radius:18px;
+    padding:16px;
+    box-shadow: 0 6px 24px rgba(2,8,23,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  header {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .logo {
+    width:46px;height:46px;border-radius:12px;
+    background:linear-gradient(135deg,#00d4ff,#0066ff);
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#021427;
+    box-shadow: 0 6px 18px rgba(0,195,255,0.08);
+  }
+  h1{font-size:18px;margin:0;}
+  p.lead{margin:6px 0 14px;color:var(--muted);font-size:13px}
+
+  form {display:grid; gap:12px;}
+  label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+  input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea {
+    width:100%;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.04);
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+    color:#e8faff;
+    font-size:14px;
+    outline:none;
+    box-shadow: inset 6px 6px 12px rgba(0,0,0,0.35), inset -6px -6px 12px rgba(255,255,255,0.01);
+  }
+  textarea {min-height:64px;resize:vertical;padding-top:10px}
+
+  .row {display:flex; gap:10px;}
+  .row .col{flex:1}
+
+  .file-drop {
+    border-radius:12px;padding:12px;border:1px dashed rgba(255,255,255,0.06);
+    background:var(--glass); text-align:center; font-size:13px; color:var(--muted);
+    position:relative; cursor:pointer;
+  }
+  .file-drop input[type="file"]{position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer}
+
+  .thumbs {display:flex; gap:8px; margin-top:8px; flex-wrap:wrap}
+  .thumb {width:84px;height:64px;border-radius:8px;overflow:hidden;background:#08121a;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+  .actions {display:flex; gap:10px; margin-top:6px}
+  .btn {
+    flex:1;padding:12px;border-radius:12px;border:none;font-weight:600;cursor:pointer;
+    background:linear-gradient(90deg,#00d4ff,#0066ff);
+    color:#021427;
+  }
+  .btn.ghost {background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+  .btn.secondary {background:linear-gradient(90deg,#fff6,#fff2);color:#021427}
+
+  .stepper {display:flex;gap:8px;align-items:center;margin-bottom:6px}
+  .step {width:10px;height:10px;border-radius:50%;background:#0b1728;border:1px solid rgba(255,255,255,0.03)}
+  .step.active {background:linear-gradient(90deg,#00d4ff,#0066ff); box-shadow:0 4px 10px rgba(0,195,255,0.12)}
+
+  .note {font-size:12px;color:var(--muted);margin-top:6px}
+
+  .summary {background:rgba(255,255,255,0.02); padding:10px;border-radius:10px;margin-top:8px;font-size:13px;color:var(--muted)}
+
+  /* camera modal */
+  .modal {
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:40;
+    background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6));
+  }
+  .modal .modal-card {width:100%; max-width:420px; border-radius:14px; overflow:hidden;}
+  .modal video{width:100%; display:block; background:#000}
+  .modal .modal-actions {display:flex;padding:12px;background:#021427; gap:8px}
+  .modal button{flex:1}
+
+  .success {text-align:center;padding:24px}
+  .success h2{color:var(--success); margin:8px 0}
+  .small-muted{font-size:13px;color:var(--muted)}
+
+  /* responsive adjustments */
+  @media (max-width:420px){
+    .app{padding:10px}
+    .card{padding:14px}
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="card" id="kycCard">
+      <header>
+        <div class="logo">KYC</div>
+        <div>
+          <h1>KYC Verification</h1>
+          <p class="lead">Complete identity verification to continue. Takes a minute.</p>
+        </div>
+      </header>
+
+      <div class="stepper" aria-hidden="true">
+        <div class="step active" id="step1dot"></div>
+        <div class="step" id="step2dot"></div>
+        <div class="step" id="step3dot"></div>
+      </div>
+
+      <form id="kycForm" autocomplete="off" novalidate>
+        <!-- Personal details -->
+        <div id="step1">
+          <label>Full name</label>
+          <input id="fullName" type="text" placeholder="John Doe" required>
+
+          <div class="row">
+            <div class="col">
+              <label>Email</label>
+              <input id="email" type="email" placeholder="you@example.com" required>
+            </div>
+            <div class="col">
+              <label>Phone</label>
+              <input id="phone" type="tel" placeholder="+234 800 000 0000">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label>Date of Birth</label>
+              <input id="dob" type="date" max="" required>
+            </div>
+            <div class="col">
+              <label>ID Type</label>
+              <select id="idType">
+                <option value="national_id">National ID</option>
+                <option value="passport">Passport</option>
+                <option value="drivers">Driver's License</option>
+                <option value="voter">Voter Card</option>
+              </select>
+            </div>
+          </div>
+
+          <label>ID Number</label>
+          <input id="idNumber" type="text" placeholder="e.g. A12345678">
+
+          <label>Address (home)</label>
+          <textarea id="address" placeholder="Street, City, State" rows="2"></textarea>
+
+          <div class="actions">
+            <button type="button" class="btn" id="toStep2">Next — Upload ID</button>
+            <button type="button" id="saveDraft" class="btn ghost">Save Draft</button>
+          </div>
+        </div>
+
+        <!-- Uploads -->
+        <div id="step2" style="display:none">
+          <label>ID Front</label>
+          <div class="file-drop" id="idFrontDrop">Click or drop to upload ID front
+            <input id="idFront" accept="image/*" type="file">
+          </div>
+          <div class="thumbs" id="idFrontThumbs"></div>
+
+          <label>ID Back</label>
+          <div class="file-drop" id="idBackDrop">Click or drop to upload ID back
+            <input id="idBack" accept="image/*" type="file">
+          </div>
+          <div class="thumbs" id="idBackThumbs"></div>
+
+          <label>Selfie (photo)</label>
+          <div class="row">
+            <div class="col file-drop" id="selfieDrop">Upload selfie <input id="selfie" accept="image/*" type="file"></div>
+            <div style="width:120px">
+              <button type="button" id="openCamera" class="btn ghost">Use Camera</button>
+            </div>
+          </div>
+          <div class="thumbs" id="selfieThumbs"></div>
+
+          <label>Proof of Address (utility bill)</label>
+          <div class="file-drop">Upload proof <input id="proof" accept="image/*,application/pdf" type="file"></div>
+          <div class="thumbs" id="proofThumbs"></div>
+
+          <div class="actions">
+            <button type="button" class="btn ghost" id="backTo1">Back</button>
+            <button type="button" class="btn" id="toStep3">Next — Review</button>
+          </div>
+        </div>
+
+        <!-- Review & submit -->
+        <div id="step3" style="display:none">
+          <h3 style="margin:0 0 10px">Review details</h3>
+          <div class="summary" id="reviewBox">
+            <!-- filled by JS -->
+          </div>
+
+          <div style="margin-top:12px">
+            <label>Agreement</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input id="agree" type="checkbox" />
+              <div style="font-size:13px;color:var(--muted)">I confirm the details are correct and I consent to verification.</div>
+            </div>
+          </div>
+
+          <div class="actions" style="margin-top:12px">
+            <button type="button" class="btn ghost" id="backTo2">Back</button>
+            <button type="button" class="btn" id="submitKYC">Submit for Verification</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- camera modal -->
+  <div id="cameraModal" class="modal" style="display:none">
+    <div class="modal-card card">
+      <video id="camVideo" autoplay playsinline></video>
+      <div class="modal-actions">
+        <button id="captureBtn" class="btn ghost">Capture</button>
+        <button id="closeCam" class="btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- success modal (simple) -->
+  <div id="successModal" class="modal" style="display:none">
+    <div class="modal-card card" style="padding:20px;text-align:center;">
+      <div class="success">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" style="display:block;margin:0 auto">
+          <path d="M20 6L9 17l-5-5" stroke="#27d07d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h2>Submitted</h2>
+        <p class="small-muted">Your KYC submission was saved and queued for verification.</p>
+        <div style="margin-top:12px">
+          <button id="closeSuccess" class="btn">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ---------- Utilities ---------- */
+const setMaxDOB = ()=>{
+  // user must be at least 16 yo for example
+  const dob = document.getElementById('dob');
+  const today = new Date();
+  const max = new Date(today.getFullYear()-16, today.getMonth(), today.getDate());
+  dob.max = max.toISOString().split('T')[0];
+};
+setMaxDOB();
+
+function showStep(n){
+  document.getElementById('step1').style.display = n===1 ? 'block' : 'none';
+  document.getElementById('step2').style.display = n===2 ? 'block' : 'none';
+  document.getElementById('step3').style.display = n===3 ? 'block' : 'none';
+  document.getElementById('step1dot').classList.toggle('active', n>=1);
+  document.getElementById('step2dot').classList.toggle('active', n>=2);
+  document.getElementById('step3dot').classList.toggle('active', n>=3);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- Draft saving ---------- */
+document.getElementById('saveDraft').addEventListener('click', ()=>{
+  const data = collectFormData(false);
+  localStorage.setItem('kyc_draft', JSON.stringify(data));
+  alert('Draft saved locally.');
+});
+
+function collectFormData(includeFiles = true){
+  const data = {
+    fullName: document.getElementById('fullName').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    dob: document.getElementById('dob').value,
+    idType: document.getElementById('idType').value,
+    idNumber: document.getElementById('idNumber').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    agree: document.getElementById('agree').checked
+  };
+  if(includeFiles){
+    data.files = {
+      idFront: window._idFrontData || null,
+      idBack: window._idBackData || null,
+      selfie: window._selfieData || null,
+      proof: window._proofData || null
+    };
+  }
+  return data;
+}
+
+/* ---------- Load draft if exists ---------- */
+(function loadDraft(){
+  const d = localStorage.getItem('kyc_draft');
+  if(!d) return;
+  try{
+    const parsed = JSON.parse(d);
+    document.getElementById('fullName').value = parsed.fullName || '';
+    document.getElementById('email').value = parsed.email || '';
+    document.getElementById('phone').value = parsed.phone || '';
+    document.getElementById('dob').value = parsed.dob || '';
+    document.getElementById('idType').value = parsed.idType || 'national_id';
+    document.getElementById('idNumber').value = parsed.idNumber || '';
+    document.getElementById('address').value = parsed.address || '';
+    document.getElementById('agree').checked = parsed.agree || false;
+    // files will show only if previously captured in this session
+  }catch(e){}
+})();
+
+/* ---------- Step navigation ---------- */
+document.getElementById('toStep2').addEventListener('click', ()=>{
+  // basic validation for step1
+  const name = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const dob = document.getElementById('dob').value;
+  if(!name || !email || !dob){ alert('Please fill Full name, Email and Date of birth.'); return; }
+  showStep(2);
+});
+document.getElementById('backTo1').addEventListener('click', ()=> showStep(1));
+document.getElementById('toStep3').addEventListener('click', ()=>{
+  // ensure at least selfie and id front present
+  if(!window._idFrontData){ if(!confirm('No ID front uploaded. Continue?')) return; }
+  if(!window._selfieData){ if(!confirm('No selfie uploaded. Continue?')) return; }
+  fillReview();
+  showStep(3);
+});
+document.getElementById('backTo2').addEventListener('click', ()=> showStep(2));
+
+/* ---------- File inputs and previews ---------- */
+function fileToDataUrl(file, cb){
+  const reader = new FileReader();
+  reader.onload = e => cb(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+function makeThumb(containerId, dataUrl, label){
+  const cont = document.getElementById(containerId);
+  const div = document.createElement('div');
+  div.className = 'thumb';
+  const img = document.createElement('img');
+  img.src = dataUrl;
+  div.appendChild(img);
+  if(label){
+    const small = document.createElement('div');
+    small.style.position='absolute'; small.style.fontSize='11px';
+  }
+  cont.innerHTML = '';
+  cont.appendChild(div);
+}
+
+/* ID Front */
+document.getElementById('idFront').addEventListener('change', (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  fileToDataUrl(f, (d)=>{ window._idFrontData = d; makeThumb('idFrontThumbs', d) });
+});
+/* ID Back */
+document.getElementById('idBack').addEventListener('change', (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  fileToDataUrl(f, (d)=>{ window._idBackData = d; makeThumb('idBackThumbs', d) });
+});
+/* Selfie */
+document.getElementById('selfie').addEventListener('change', (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  fileToDataUrl(f, (d)=>{ window._selfieData = d; makeThumb('selfieThumbs', d) });
+});
+/* Proof */
+document.getElementById('proof').addEventListener('change', (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  if(f.type === 'application/pdf'){ // make PDF placeholder
+    window._proofData = null;
+    const cont = document.getElementById('proofThumbs');
+    cont.innerHTML = '<div class="thumb">PDF uploaded</div>';
+    return;
+  }
+  fileToDataUrl(f, (d)=>{ window._proofData = d; makeThumb('proofThumbs', d) });
+});
+
+/* ---------- Camera capture ---------- */
+let stream;
+document.getElementById('openCamera').addEventListener('click', async ()=>{
+  const modal = document.getElementById('cameraModal');
+  const video = document.getElementById('camVideo');
+  modal.style.display = 'flex';
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio:false });
+    video.srcObject = stream;
+  }catch(e){
+    alert('Could not access camera. Please allow camera permission or upload selfie manually.');
+    modal.style.display = 'none';
+  }
+});
+document.getElementById('closeCam').addEventListener('click', ()=>{
+  stopStream();
+  document.getElementById('cameraModal').style.display = 'none';
+});
+function stopStream(){
+  if(stream){
+    stream.getTracks().forEach(t=>t.stop());
+    stream = null;
+  }
+}
+document.getElementById('captureBtn').addEventListener('click', ()=>{
+  const video = document.getElementById('camVideo');
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video,0,0,canvas.width,canvas.height);
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+  window._selfieData = dataUrl;
+  makeThumb('selfieThumbs', dataUrl);
+  stopStream();
+  document.getElementById('cameraModal').style.display = 'none';
+});
+
+/* ---------- Review ---------- */
+function fillReview(){
+  const d = collectFormData(true);
+  const box = document.getElementById('reviewBox');
+  box.innerHTML = `
+    <strong>Name:</strong> ${d.fullName || '-'}<br>
+    <strong>Email:</strong> ${d.email || '-'}<br>
+    <strong>Phone:</strong> ${d.phone || '-'}<br>
+    <strong>DOB:</strong> ${d.dob || '-'}<br>
+    <strong>ID:</strong> ${d.idType} — ${d.idNumber || '-'}<br>
+    <strong>Address:</strong> ${d.address || '-'}<br>
+    <div style="margin-top:8px">
+      <strong>Files:</strong>
+      <div class="thumbs" style="margin-top:8px">
+        ${d.files.idFront ? `<div class="thumb"><img src="${d.files.idFront}" /></div>` : '<div class="thumb">ID front</div>'}
+        ${d.files.idBack ? `<div class="thumb"><img src="${d.files.idBack}" /></div>` : '<div class="thumb">ID back</div>'}
+        ${d.files.selfie ? `<div class="thumb"><img src="${d.files.selfie}" /></div>` : '<div class="thumb">selfie</div>'}
+        ${d.files.proof ? `<div class="thumb"><img src="${d.files.proof}" /></div>` : '<div class="thumb">proof</div>'}
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- Submit ---------- */
+document.getElementById('submitKYC').addEventListener('click', ()=>{
+  const data = collectFormData(true);
+  // validation
+  if(!data.fullName || !data.email || !data.dob){ alert('Please complete required fields.'); return; }
+  if(!data.agree){ alert('You must consent to verification.'); return; }
+
+  // Here: send to server (example)
+  // fetch('/api/kyc/submit', { method:'POST', body: JSON.stringify(data) })
+  // For demo store in localStorage as 'kyc_submission'
+  const submissions = JSON.parse(localStorage.getItem('kyc_submissions') || '[]');
+  submissions.push({id: Date.now(), data});
+  localStorage.setItem('kyc_submissions', JSON.stringify(submissions));
+
+  // show success
+  document.getElementById('successModal').style.display = 'flex';
+});
+document.getElementById('closeSuccess').addEventListener('click', ()=>{
+  document.getElementById('successModal').style.display = 'none';
+  // clear form (optionally)
+  // location.reload();
+});
+
+/* ---------- Drag & drop UX for file-drop areas ---------- */
+['idFrontDrop','idBackDrop','selfieDrop'].forEach(id=>{
+  const el = document.getElementById(id);
+  el.addEventListener('dragover', e=>{ e.preventDefault(); el.style.borderColor='#00d4ff'; });
+  el.addEventListener('dragleave', e=>{ el.style.borderColor='rgba(255,255,255,0.06)'; });
+  el.addEventListener('drop', e=>{
+    e.preventDefault();
+    el.style.borderColor='rgba(255,255,255,0.06)';
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if(!f) return;
+    if(id==='idFrontDrop') fileToDataUrl(f, (d)=>{ window._idFrontData = d; makeThumb('idFrontThumbs', d) });
+    if(id==='idBackDrop') fileToDataUrl(f, (d)=>{ window._idBackData = d; makeThumb('idBackThumbs', d) });
+    if(id==='selfieDrop') fileToDataUrl(f, (d)=>{ window._selfieData = d; makeThumb('selfieThumbs', d) });
+  });
+});
+
+/* ---------- Optional: prefill example for quick testing ---------- */
+// Uncomment to prefill
+/*
+window._idFrontData = 'data:image/png;base64,...';
+window._selfieData = 'data:image/png;base64,...';
+makeThumb('idFrontThumbs', window._idFrontData);
+makeThumb('selfieThumbs', window._selfieData);
+*/
+
+</script>
+</body>
+</html>
