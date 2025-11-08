@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USDT Miner Ranks</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0e0e10, #1a1a1f);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      padding-bottom: 20px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .back-arrow {
+      cursor: pointer;
+      font-size: 20px;
+      margin-right: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    .back-arrow:hover {
+      transform: scale(1.2);
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+      border-radius: 15px;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .rank-section {
+      margin: 15px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 10px 15px;
+    }
+
+    .rank-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .rank-icon {
+      width: 25px;
+      height: 25px;
+    }
+
+    .dropdown {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      margin-top: 10px;
+      padding: 12px 15px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dropdown img {
+      width: 28px;
+      height: 28px;
+      margin-right: 10px;
+    }
+
+    .dropdown:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .dropdown-content {
+      display: none;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid #00e0ff;
+      border-radius: 10px;
+      padding: 10px 15px;
+      margin-top: 5px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .warning-box {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 15px;
+      margin: 20px 15px 0 15px;
+      padding: 15px;
+      text-align: center;
+      animation: heartbeat 1.5s infinite;
+    }
+
+    .warning-box img {
+      width: 40px;
+      height: 40px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes heartbeat {
+      0% { box-shadow: 0 0 5px #ff4444; }
+      50% { box-shadow: 0 0 20px #ff4444; }
+      100% { box-shadow: 0 0 5px #ff4444; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .warning-text {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ffbbbb;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="back-arrow" onclick="goBack()">←</div>
+      <h3>Ranks & KYC</h3>
+    </div>
+
+    <div class="video-container">
+      <video autoplay loop muted>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="rank-section">
+      <div class="rank-header">
+        <span>Rank</span>
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" class="rank-icon">
+      </div>
+    </div>
+
+    <div class="dropdown" onclick="toggleDropdown('newbie')">
+      <div>
+        <img src="https://cdn-icons-png.flaticon.com/512/1157/1157109.png">
+        Newbie
+      </div>
+      <span>▼</span>
+    </div>
+    <div id="newbie" class="dropdown-content">
+      <p>Welcome to the mining journey! Earn and learn as you go.</p>
+    </div>
+
+    <div class="dropdown" onclick="toggleDropdown('pioneer')">
+      <div>
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+        Pioneer
+      </div>
+      <span>▼</span>
+    </div>
+    <div id="pioneer" class="dropdown-content">
+      <p>Pioneer rank gives you access to special mining bonuses and early task rewards.</p>
+    </div>
+
+    <div class="dropdown" onclick="toggleDropdown('elite')">
+      <div>
+        <img src="https://cdn-icons-png.flaticon.com/512/1998/1998707.png">
+        Elite
+      </div>
+      <span>▼</span>
+    </div>
+    <div id="elite" class="dropdown-content">
+      <p>Elite rank unlocks advanced mining rates and better referral earnings.</p>
+    </div>
+
+    <div class="dropdown" onclick="toggleDropdown('supreme')">
+      <div>
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png">
+        Supreme
+      </div>
+      <span>▼</span>
+    </div>
+    <div id="supreme" class="dropdown-content">
+      <p>Supreme rank allows full KYC verification and USDT withdrawal privileges.</p>
+    </div>
+
+    <div class="warning-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png">
+      <div class="warning-text">
+        You must reach <b>Supreme Rank</b> to do your KYC and start withdrawing your USDT.<br><br>
+        Participating in tasks can boost your chance to do KYC earlier.<br><br>
+        Check in every day and complete available tasks to boost your chance for early KYC.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+
+    function toggleDropdown(id) {
+      const content = document.getElementById(id);
+      content.style.display = content.style.display === "block" ? "none" : "block";
+    }
+  </script>
+
+</body>
+</html>
