@@ -1,238 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>USDT Miner - Referral Dashboard</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0c162d">
-  <style>
-    * {
-      margin: 0; padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-    body {
-      background: linear-gradient(145deg, #0b1429, #111d3d);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      overflow-x: hidden;
-    }
-    .container {
-      width: 90%;
-      max-width: 420px;
-      background: #0e1a33;
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 8px 8px 15px #080f1f, -8px -8px 15px #18294f;
-      text-align: center;
-    }
-    h1 {
-      color: #00ffd5;
-      font-size: 1.6em;
-      margin-bottom: 15px;
-      text-shadow: 0 0 10px rgba(0,255,213,0.5);
-    }
-    .user-info {
-      margin-bottom: 25px;
-    }
-    .user-info p {
-      font-size: 0.95em;
-      color: #ccc;
-      margin: 3px 0;
-    }
-    .stat-box {
-      background: #0b1429;
-      border-radius: 15px;
-      padding: 15px;
-      margin: 10px 0;
-      box-shadow: inset 4px 4px 8px #080f1f, inset -4px -4px 8px #18294f;
-    }
-    .stat-box h3 {
-      color: #00ffd5;
-      margin-bottom: 5px;
-      font-size: 1em;
-    }
-    .stat-box p {
-      font-size: 1.2em;
-      font-weight: 600;
-    }
-    .actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 1em;
-      font-weight: 600;
-      background: #00ffd5;
-      color: #0b1429;
-      cursor: pointer;
-      box-shadow: 0 0 10px #00ffd5;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #02cfa8;
-    }
-    .logout {
-      background: transparent;
-      color: #ff5050;
-      font-weight: 500;
-      text-decoration: underline;
-      box-shadow: none;
-      margin-top: 10px;
-    }
-    .rank {
-      margin-top: 10px;
-      color: #00ffd5;
-      font-size: 0.9em;
-    }
-    .install {
-      margin-top: 10px;
-      background: #1f355e;
-      color: #00ffd5;
-      box-shadow: inset 4px 4px 8px #0a142c, inset -4px -4px 8px #1b2f59;
-    }
-    @media (max-width: 400px) {
-      .container { padding: 20px; }
-      h1 { font-size: 1.3em; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USDT Miner - Referral Dashboard</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: #e0e5ec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .container {
+    width: 90%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 25px;
+    box-shadow: 10px 10px 20px #babecc, -10px -10px 20px #ffffff;
+    text-align: center;
+    padding: 25px;
+  }
+
+  .logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+    filter: drop-shadow(2px 2px 5px #babecc);
+  }
+
+  h1 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+    letter-spacing: 0.5px;
+  }
+
+  h3 {
+    margin: 10px 0 20px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .dashboard {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
+    padding: 15px;
+    margin-top: 15px;
+  }
+
+  .dashboard h2 {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .stat-box {
+    flex: 1;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+    padding: 15px;
+  }
+
+  .stat-box h4 {
+    margin: 0;
+    color: #555;
+    font-size: 13px;
+  }
+
+  .stat-box p {
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #111;
+  }
+
+  .info {
+    text-align: left;
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: inset 3px 3px 6px #d1d9e6, inset -3px -3px 6px #ffffff;
+    padding: 15px;
+  }
+
+  .info p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .label {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #fff;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+    padding: 10px;
+    cursor: pointer;
+    color: #333;
+    font-weight: 500;
+    transition: 0.2s ease-in-out;
+  }
+
+  .btn:hover {
+    box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
+  }
+
+  .btn img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .position {
+    margin-top: 20px;
+    color: #666;
+    font-size: 13px;
+  }
+
+  .copied {
+    color: #00b894;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+  }
+</style>
 </head>
 <body>
+
   <div class="container">
-    <h1>Referral Dashboard</h1>
-    <div class="user-info">
-      <p><strong>Username:</strong> <span id="username">...</span></p>
-      <p><strong>Email:</strong> <span id="email">...</span></p>
-      <p><strong>Referral Code:</strong> <span id="refCode">...</span></p>
+    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968260.png" class="logo" alt="USDT Logo">
+    <h1>USDT Miner</h1>
+    <h3>Invite friends and earn 0.3 USDT per one friend invited</h3>
+
+    <div class="dashboard">
+      <h2>Your Referral Dashboard</h2>
+      <div class="stats">
+        <div class="stat-box">
+          <h4>Referrals</h4>
+          <p id="referrals">12</p>
+        </div>
+        <div class="stat-box">
+          <h4>Balance</h4>
+          <p id="balance">$3.60</p>
+        </div>
+      </div>
     </div>
 
-    <div class="stat-box">
-      <h3>Referral Count</h3>
-      <p id="refCount">0</p>
+    <div class="info">
+      <p><span class="label">Username:</span> <span id="username">CryptoMinerPro</span></p>
+      <p><span class="label">Email:</span> <span id="email">usdtminer@gmail.com</span></p>
+      <p><span class="label">Referral Code:</span> <span id="refCode">USDT12345</span></p>
+      <p><span class="label">Referral Link:</span> <span id="refLink">https://usdtminer.com/ref/USDT12345</span></p>
     </div>
 
-    <div class="stat-box">
-      <h3>Referral Earnings ($)</h3>
-      <p id="refEarnings">0.00</p>
+    <div class="buttons">
+      <button class="btn" onclick="copyText('refLink')">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png"> Copy Link
+      </button>
+      <button class="btn" onclick="copyText('refCode')">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png"> Copy Code
+      </button>
+      <button class="btn" onclick="shareReferral()">
+        <img src="https://cdn-icons-png.flaticon.com/512/929/929610.png"> Share
+      </button>
     </div>
 
-    <div class="rank">
-      <p>Your Rank: <span id="rank">834,577</span></p>
-    </div>
+    <p id="copyMsg" class="copied">Copied!</p>
 
-    <div class="actions">
-      <button id="copyCode">Copy Code</button>
-      <button id="copyLink">Copy Referral Link</button>
-      <button id="shareLink">Share Referral</button>
-      <button class="install" id="installBtn">Install App</button>
-      <button class="logout" id="logoutBtn">Logout</button>
+    <div class="position">
+      <b>Position:</b> Supreme Rank Member
     </div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+<script>
+  // Copy to clipboard functionality
+  function copyText(id) {
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text);
+    const msg = document.getElementById("copyMsg");
+    msg.style.display = "block";
+    msg.textContent = "Copied!";
+    setTimeout(() => msg.style.display = "none", 1500);
+  }
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDk1g-8dLz_4N1Xv9cYvY5mP7g9Z6p0l5W",
-      authDomain: "usdt-login.firebaseapp.com",
-      databaseURL: "https://usdt-login-default-rtdb.firebaseio.com",
-      projectId: "usdt-login",
-      storageBucket: "usdt-login.appspot.com",
-      messagingSenderId: "1037466394440",
-      appId: "1:1037466394440:web:4a5d4a982e1a3a6a6c1bb7"
-    };
+  // Share functionality
+  function shareReferral() {
+    const refLink = document.getElementById("refLink").textContent;
+    if (navigator.share) {
+      navigator.share({
+        title: "Join USDT Miner",
+        text: "Earn free USDT daily! Use my referral link:",
+        url: refLink
+      });
+    } else {
+      alert("Sharing not supported on this device. Please copy the link instead.");
+    }
+  }
+</script>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
-
-    const usernameEl = document.getElementById("username");
-    const emailEl = document.getElementById("email");
-    const refCodeEl = document.getElementById("refCode");
-    const refCountEl = document.getElementById("refCount");
-    const refEarningsEl = document.getElementById("refEarnings");
-    const rankEl = document.getElementById("rank");
-
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "index.html";
-        return;
-      }
-
-      const snap = await get(ref(db, "users/" + user.uid));
-      if (snap.exists()) {
-        const data = snap.val();
-        usernameEl.textContent = data.username || "User";
-        emailEl.textContent = data.email || user.email;
-        refCodeEl.textContent = data.refCode || "N/A";
-        refCountEl.textContent = data.referrals || 0;
-        refEarningsEl.textContent = data.referralEarnings ? data.referralEarnings.toFixed(2) : "0.00";
-        rankEl.textContent = 834577 - (data.referrals || 0);
-      } else {
-        usernameEl.textContent = "User";
-      }
-    });
-
-    document.getElementById("copyCode").onclick = () => {
-      navigator.clipboard.writeText(refCodeEl.textContent);
-      alert("Referral code copied!");
-    };
-
-    document.getElementById("copyLink").onclick = () => {
-      const link = `https://usdtmining.github.io/USDT/index.html?ref=${refCodeEl.textContent}`;
-      navigator.clipboard.writeText(link);
-      alert("Referral link copied!");
-    };
-
-    document.getElementById("shareLink").onclick = async () => {
-      const link = `https://usdtmining.github.io/USDT/index.html?ref=${refCodeEl.textContent}`;
-      if (navigator.share) {
-        await navigator.share({
-          title: "Join USDT Miner & Earn Free USDT Daily!",
-          text: "Join USDT Miner and start earning passive USDT every day.",
-          url: link
-        });
-      } else {
-        alert("Sharing not supported on this device.");
-      }
-    };
-
-    document.getElementById("logoutBtn").onclick = async () => {
-      await signOut(auth);
-      window.location.href = "index.html";
-    };
-
-    // Install app
-    let deferredPrompt;
-    const installBtn = document.getElementById("installBtn");
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'block';
-    });
-
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          installBtn.textContent = "Installed";
-        }
-        deferredPrompt = null;
-      }
-    });
-  </script>
 </body>
 </html>
