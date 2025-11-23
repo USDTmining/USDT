@@ -189,7 +189,7 @@
     <div class="amount">$15</div>
 
     <!-- Countdown Timer -->
-    <div class="countdown" id="timer">00:00:00</div>
+    <div class="countdown" id="countdown">00:00:00</div>
 
     <!-- Claim Section -->
     <div class="claim-header">Claim</div>
@@ -263,33 +263,35 @@
     
 
 <script>
-/* Persistent Countdown Timer (1 hour example) */
-let countdownTime = localStorage.getItem("claimTimer");
+// Countdown Timer
+  const countdownEl = document.getElementById("countdown");
+  // Set your target end date here (YYYY-MM-DD format)
+  const targetDate = new Date("2025-11-30T00:00:00").getTime();
 
-if(!countdownTime){
-    countdownTime = Date.now() + (10 * 24 * 60 * 60 * 1000); // 1 hour countdown
-    localStorage.setItem("claimTimer", countdownTime);
-}
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const gap = targetDate - now;
 
-function updateTimer(){
-    const now = Date.now();
-    const distance = countdownTime - now;
+    const second = 1000;
+    const minute = second * 60;
+    const hour   = minute * 60;
+    const day    = hour * 24;
 
-    if(distance <= 0){
-        document.getElementById("timer").innerHTML = "00:00:00";
-        return;
-    }
+    const d = Math.floor(gap / day);
+    const h = Math.floor((gap % day) / hour);
+    const m = Math.floor((gap % hour) / minute);
+    const s = Math.floor((gap % minute) / second);
 
-    const hours = Math.floor((distance / (1000 * 60 * 60)));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    countdownEl.innerHTML = `
+      <span>${d}d</span> :
+      <span>${h}h</span> :
+      <span>${m}m</span> :
+      <span>${s}s</span>
+    `;
+  }
 
-    document.getElementById("timer").innerHTML =
-        `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-}
-
-setInterval(updateTimer, 1000);
-updateTimer();
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
 
 /* Popup Logic */
 document.getElementById("continueBtn").onclick = function(){
