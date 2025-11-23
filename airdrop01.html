@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USDT Claim Task</title>
+
+<style>
+    body{
+        margin:0;
+        padding:0;
+        font-family:Arial, sans-serif;
+        background:#041d18;
+        color:#fff;
+    }
+
+    .page-container{
+        width:90%;
+        margin:40px auto;
+        background:#062e24;
+        padding:25px;
+        border-radius:15px;
+        box-shadow:0 0 15px rgba(0,0,0,0.3);
+        position:relative;
+    }
+
+    /* Logo */
+    .logo{
+        position:absolute;
+        top:15px;
+        left:15px;
+        width:60px;
+        height:60px;
+        object-fit:contain;
+    }
+
+    /* Ending In */
+    .ending-box{
+        position:absolute;
+        top:15px;
+        right:15px;
+        background:#b50000;
+        color:#fff;
+        padding:8px 12px;
+        border-radius:10px;
+        font-size:13px;
+        font-weight:bold;
+    }
+
+    /* Big USDT Amount */
+    .amount{
+        text-align:center;
+        margin-top:70px;
+        font-size:55px;
+        font-weight:900;
+        background: linear-gradient(45deg, #0bff83, #b2ffcb, #0bff83);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    /* Countdown timer */
+    .countdown{
+        text-align:center;
+        font-size:25px;
+        font-weight:bold;
+        margin-top:10px;
+        color:#ff5757;
+    }
+
+    /* Claim header */
+    .claim-header{
+        text-align:center;
+        margin-top:25px;
+        font-size:35px;
+        font-weight:bold;
+    }
+
+    .small-header{
+        text-align:center;
+        margin-top:10px;
+        font-size:18px;
+        color:#b2ffe1;
+    }
+
+    .description{
+        text-align:center;
+        margin-top:10px;
+        font-size:16px;
+        width:90%;
+        margin-left:auto;
+        margin-right:auto;
+        color:#dafff2;
+        line-height:1.5;
+    }
+
+    .note{
+        text-align:center;
+        margin-top:20px;
+        font-size:14px;
+        color:#ff8a8a;
+        font-style:italic;
+        width:90%;
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    /* Continue button */
+    .btn{
+        display:block;
+        width:80%;
+        margin:30px auto;
+        padding:15px;
+        background:#00d68f;
+        color:#041d18;
+        text-align:center;
+        border-radius:10px;
+        font-size:20px;
+        font-weight:bold;
+        cursor:pointer;
+    }
+
+    /* Popup Background */
+    .popup-bg{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.6);
+        backdrop-filter:blur(3px);
+        display:none;
+        justify-content:center;
+        align-items:center;
+    }
+
+    /* Popup */
+    .popup{
+        background:#062e24;
+        width:85%;
+        padding:25px;
+        border-radius:15px;
+        text-align:center;
+        box-shadow:0 0 15px rgba(0,0,0,0.4);
+        animation:pop 0.3s ease;
+    }
+
+    @keyframes pop{
+        from{ transform:scale(0.8); opacity:0; }
+        to{ transform:scale(1); opacity:1; }
+    }
+
+    .popup h2{
+        font-size:22px;
+        margin-bottom:10px;
+        color:#ff6666;
+    }
+
+    .popup p{
+        color:#caffea;
+        font-size:16px;
+        line-height:1.5;
+    }
+
+    .ok-btn{
+        margin-top:20px;
+        background:#00d68f;
+        padding:12px;
+        border-radius:10px;
+        font-size:18px;
+        font-weight:bold;
+        cursor:pointer;
+        color:#041d18;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="page-container">
+
+    <!-- Logo -->
+    <img src="logo.png" class="logo">
+
+    <!-- Ending In -->
+    <div class="ending-box">Ending In</div>
+
+    <!-- Big Amount -->
+    <div class="amount">$15</div>
+
+    <!-- Countdown Timer -->
+    <div class="countdown" id="timer">00:00:00</div>
+
+    <!-- Claim Section -->
+    <div class="claim-header">Claim</div>
+
+    <div class="small-header">Claim your remaining $15 USDT</div>
+
+    <div class="description">
+        Invite five (5) more friends and you will receive your remaining 
+        $15 USDT task claim within 10 minutes.
+    </div>
+
+    <div class="note">
+        <b>Note:</b> Failure To Complete 5/5 friends invite will lead to withheld 
+        of your remaining task claim ($15 USDT of $25).
+    </div>
+
+    <!-- Continue Button -->
+    <div class="btn" id="continueBtn">Continue</div>
+</div>
+
+<!-- POPUP -->
+<div class="popup-bg" id="popupBackground">
+    <div class="popup">
+        <h2>Sorry You're Not Eligible</h2>
+        <p>
+            You did not participate in the first round up task claim.<br>
+            You can also invite your friends, earn some points and wait for the next task.<br>
+            Thank you.
+        </p>
+        <div class="ok-btn" id="okBtn">OK</div>
+    </div>
+</div>
+
+<script>
+/* Persistent Countdown Timer (1 hour example) */
+let countdownTime = localStorage.getItem("claimTimer");
+
+if(!countdownTime){
+    countdownTime = Date.now() + (60 * 60 * 1000); // 1 hour countdown
+    localStorage.setItem("claimTimer", countdownTime);
+}
+
+function updateTimer(){
+    const now = Date.now();
+    const distance = countdownTime - now;
+
+    if(distance <= 0){
+        document.getElementById("timer").innerHTML = "00:00:00";
+        return;
+    }
+
+    const hours = Math.floor((distance / (1000 * 60 * 60)));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML =
+        `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+}
+
+setInterval(updateTimer, 1000);
+updateTimer();
+
+/* Popup Logic */
+document.getElementById("continueBtn").onclick = function(){
+    document.getElementById("popupBackground").style.display = "flex";
+};
+
+document.getElementById("okBtn").onclick = function(){
+    document.getElementById("popupBackground").style.display = "none";
+};
+</script>
+
+</body>
+</html>
