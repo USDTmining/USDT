@@ -227,7 +227,7 @@
 let countdownTime = localStorage.getItem("claimTimer");
 
 if(!countdownTime){
-    countdownTime = Date.now() + (60 * 60 * 1000); // 1 hour countdown
+    countdownTime = Date.now() + (10 * 24 * 60 * 60 * 1000); // 1 hour countdown
     localStorage.setItem("claimTimer", countdownTime);
 }
 
