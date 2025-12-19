@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mining Savi - Admin Panel</title>
+<title>Mining USDT - Admin Panel</title>
 <link rel="icon" href="https://coachflux.github.io/Ref/img/usdt.webp">
 <style>
   body {
@@ -112,7 +112,7 @@
     <h3>Send Notification to All Users</h3>
     <input type="text" id="notifTitle" placeholder="Notification Title">
     <textarea id="notifMsg" placeholder="Notification Message"></textarea>
-    <input type="text" id="notifImg" placeholder="Image URL (optional)" value="https://coachflux.github.io/Ref/img/usdt.webp">
+    <input type="text" id="notifImg" placeholder="Image URL (optional)" value="https://usdtmining.github.io/USDT/img/usdt.webp">
     <button onclick="sendNotification()">Send Notification</button>
     <p id="notifStatus" style="color:green;"></p>
   </div>
@@ -135,7 +135,7 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  const ADMIN_PASSWORD = "AdminOnly123"; // kept local only
+  const ADMIN_PASSWORD = "AdminOnly123&"; // kept local only
   function checkAdmin() {
     const pass = document.getElementById('adminPass').value;
     if (pass === ADMIN_PASSWORD) {
