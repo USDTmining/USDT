@@ -1,5 +1,5 @@
 {
-  "name": "USDT Miner",
+  "name": "USDT MineUp",
   "short_name": "USDT",
   "description": "Earn by mining and referring friends. View notifications, ranks, and earnings directly in your app.",
   "start_url": "index.html",
@@ -10,12 +10,12 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://coachflux.github.io/Ref/img/usdt.webp",
+      "src": "https://usdtmining.github.io/USDT/img/usdt.webp",
       "sizes": "192x192",
       "type": "image/webp"
     },
     {
-      "src": "https://coachflux.github.io/Ref/img/usdt.webp",
+      "src": "https://usdtmining.github.io/USDT/img/usdt.webp",
       "sizes": "512x512",
       "type": "image/webp"
     }
