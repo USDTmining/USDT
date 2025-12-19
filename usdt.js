@@ -134,7 +134,7 @@ function showPage(page) {
 
       function updateRankUI(){
         const days = getDays().length;
-        let name='Starter', pct=days/30*100, next='Pioneer', rem=30-days;
+        let name='Newbie', pct=days/30*100, next='Pioneer', rem=30-days;
         if(days>=90){name='Supreme';pct=100;next=null;}
         else if(days>=60){name='Elite';pct=(days-60)/30*100;rem=90-days;next='Supreme';}
         else if(days>=30){name='Pioneer';pct=(days-30)/30*100;rem=60-days;next='Elite';}
