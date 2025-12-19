@@ -524,7 +524,7 @@ async function displayReferralInfo() {
     const users = Object.values(allSnap.val());
     users.sort((a, b) => (b.invited || 0) - (a.invited || 0));
     const rankIndex = users.findIndex(x => x.uid === uid);
-    const position = 834577 + rankIndex;
+    const position = 2834577 + rankIndex;
     document.getElementById('userPosition').innerText = position + 'th';
   }
 }
