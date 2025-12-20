@@ -58,7 +58,7 @@
   .terms-link{color:#00b87a;cursor:pointer;text-decoration:underline}
   .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:9999}
   .modal{width:94%;max-width:720px;background:#fff;border-radius:10px;padding:18px;box-shadow:0 10px 40px rgba(0,0,0,0.25);position:relative}
-  .modal .close{position:absolute;right:12px;top:12px;border:none;background:transparent;font-size:20px;cursor:pointer}
+  .modal .close{position:absolute;right:12px;top:12px;border:none;color:red;background:transparent;font-size:20px;cursor:pointer}
   .terms-content{max-height:64vh;overflow:auto;padding-right:6px;color:#0c3b33}
   .tc-row{display:flex;align-items:center;gap:8px;margin-top:8px}
   footer{margin-top:14px;text-align:center;color:#064f40;font-size:13px}
@@ -253,33 +253,31 @@
       <div class="terms-content" id="tcContent" tabindex="0">
         <h3 id="tcTitle">Terms & Conditions — USDT MineUp</h3>
         <p><strong>Last updated:</strong> August 17, 2025</p>
-        <p>By registering and using USDT Miner you agree to the following terms. This demo stores data in Firebase Realtime DB and uses Firebase Auth.</p>
-        <h3>USDT MineUp Privacy Policy</h3>
-            <p>At USDT MineUp, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our services. By accessing or using our platform, you agree to the practices described in this policy.</p>
+        <p>By registering and using USDT MineUp you agree to the following terms.</p>
+        
+        <h4>1. Eligibility</h4>
+            <p>Users must be at least 18 years old to participate in USDT mining. By registering, you confirm that you meet this requirement and are not a resident of a prohibited jurisdiction.</p>
             
-            <h4>1. Information We Collect</h4>
-            <p>We collect personal information such as your name, email address, and transaction details when you register or engage in mining activities. We also collect non-personal data, including IP addresses and device information, to enhance our services.</p>
+            <h4>2. Mining Process</h4>
+            <p>USDT MineUp involves the use of computational resources to validate transactions and earn rewards in USDT. The mining difficulty and rewards are subject to change based on number of miners, network conditions and company policies.</p>
             
-            <h4>2. How We Use Your Information</h4>
-            <p>Your information is used to provide and improve our mining services, process transactions, and communicate with you about your account. We may also use data for analytics and to ensure compliance with legal obligations.</p>
+            <h4>3. Fees</h4>
+            <p>A maintenance fee of 2% will be deducted from your mining rewards. Additional transaction fees may apply depending on the withdrawal method chosen.</p>
             
-            <h4>3. Data Sharing</h4>
-            <p>We do not sell your personal information to third parties. However, we may share data with service providers or legal authorities if required by law or to protect our rights and safety.</p>
+            <h4>4. Risk Acknowledgment</h4>
+            <p>Risk management is only in your hands. We do not have details of your wallet pin. Forgetting your wallet pin will make you not to be able to assess your wallet for withdrawals.</p>
             
-            <h4>4. Data Security</h4>
-            <p>We implement industry-standard security measures to protect your data from unauthorized access, alteration, or disclosure. Despite our efforts, no method of transmission over the internet is 100% secure.</p>
+            <h4>5. Account Security</h4>
+            <p>You are responsible for maintaining the confidentiality of your account credentials. The company is not liable for any unauthorized access resulting from your negligence, and the company does not allow multiple accounts in the same device.</p>
             
-            <h4>5. Your Rights</h4>
-            <p>You have the right to access, update, or delete your personal information. To exercise these rights, please contact us at privacy@usdtmining.com or @usdtmineup@gmail.com. We will respond within 30 days.</p>
+            <h4>6. Termination</h4>
+            <p>We reserve the right to terminate or suspend your account at our discretion if we detect any violation of these terms or suspicious activity.</p>
             
-            <h4>6. Cookies and Tracking</h4>
-            <p>We use cookies to enhance your experience and analyze usage patterns. You can manage cookie preferences through your browser settings, though this may affect certain features of our platform.</p>
-            
-            <h4>7. Changes to This Policy</h4>
-            <p>We may update this Privacy Policy periodically. Significant changes will be communicated to you, and continued use of our services after such changes constitutes acceptance of the new policy.</p>
+            <h4>7. Amendments</h4>
+            <p>These terms may be updated from time to time. Users will be notified of significant changes, and continued use of the service constitutes acceptance of the new terms.</p>
             
             <h4>8. Contact Us</h4>
-            <p>For any privacy-related inquiries, please reach out to our support team at usdtmineup@gmail.com or privacy@usdtmining.com.</p>
+            <p>For any questions or concerns, please contact our support team at support@usdtmining.com or usdtmineup@gmail.com.</p>
         
 <!-- Firebase compat CDN (v9 compat) - using compat so we can call firebase.auth() style -->
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
