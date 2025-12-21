@@ -499,37 +499,7 @@
     }
 
     // Show toast popup
-    function showToast(note) {
-      const toast = document.createElement("div");
-      toast.classList.add("toast");
-
-      const img = document.createElement("img");
-      img.src = note.image || "https://usdtmining.github.io/USDT/img/usdt.webp";
-
-      const textDiv = document.createElement("div");
-      textDiv.innerHTML = `<strong>${note.title || "Announcement"}</strong><br>${note.message || ""}`;
-
-      const closeBtn = document.createElement("button");
-      closeBtn.innerHTML = "×";
-      closeBtn.onclick = () => hideToast(toast);
-
-      toast.appendChild(img);
-      toast.appendChild(textDiv);
-      toast.appendChild(closeBtn);
-      document.body.appendChild(toast);
-
-      setTimeout(() => toast.classList.add("show"), 100);
-      setTimeout(() => hideToast(toast), 6000);
-    }
-
-    function hideToast(toast) {
-      toast.classList.remove("show");
-      toast.classList.add("hide");
-      setTimeout(() => toast.remove(), 400);
-    }
-
-    // Initialize
-    loadNotifications();
+    
   </script>
   <!-- ✅ PWA Install Script -->
   <script>
